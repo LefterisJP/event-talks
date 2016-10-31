@@ -1,0 +1,47 @@
+#+Title: Introduction to the Raiden Network
+#+Author: Lefteris  Karapetsas
+#+Email: lefteris@refu.co
+#+REVEAL_MARGIN: 0.0001
+#+REVEAL_EXTRA_CSS: ./style.css
+#+REVEAL_HLEVEL: 1
+#+REVEAL_TITLE_SLIDE_BACKGROUND: bg1.jpg
+#+OPTIONS: reveal-title-slide:<h1>%t</h1><h2 class='my-title'>%a</h2><h3 class='my-title'>Berlin Ethereum Meetup</h3><h3 class='my-title'>01/11/2016</h3>
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: reveal_control:t
+#+OPTIONS: reveal_progress:nil
+#+OPTIONS: reveal_history:ni1l
+#+OPTIONS: reveal_center:nil
+#+OPTIONS: reveal_rolling_links:nil
+#+OPTIONS: reveal_keyboard:t
+#+OPTIONS: reveal_rolling_links:t
+#+OPTIONS: reveal_overview:t
+#+OPTIONS: reveal_slide_number:nil
+
+
+
+* Outline
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- *Section I:* Introduce what the Ethereum protocol is and go through its basic components.
+- *Section II:* Introduce what The DAO is.
+- *Section III:* Explain the how the DAO hack happened and what its consequences are.
+
+
+
+* Open Ethereum Problems
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ethereum
+[[./images/ethereum.png]]
+
+- Scalability
+- Transaction Finality
+- Transaction Privacy
+
+* Possible Solutions
+
