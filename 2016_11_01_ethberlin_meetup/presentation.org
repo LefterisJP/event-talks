@@ -44,4 +44,15 @@
 - Transaction Privacy
 
 * Possible Solutions
-
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- *Off-chain transfers*: Distributed State and Computation via bilateral transfers
+#+NAME: 
+[[./images/offchain-transfers.png]]
+- *The Blockchain*: Replicated ledger for computations that provides
+     - Escrow
+     - Dispute Resolution
+     - Global State
+#+NAME: 
+[[./images/blockchain.png]]
