@@ -212,6 +212,15 @@ margin-top: 1.8em;
     margin-bottom: 40px;
 }
 
+.reveal section img.compressed {
+    margin-top:-20px;
+    margin-bottom:-20px;
+}
+
+.reveal section img.noborder {
+    border: 0px;
+}
+
 .opening_paragraph p{
     margin-bottom: 1em;
 }

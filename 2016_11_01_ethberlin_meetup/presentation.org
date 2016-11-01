@@ -1,10 +1,10 @@
-#+Title: Introduction to the Raiden Network
+#+Title: Raiden Network
 #+Author: Lefteris  Karapetsas
 #+Email: lefteris@refu.co
 #+REVEAL_MARGIN: 0.0001
 #+REVEAL_EXTRA_CSS: ./style.css
 #+REVEAL_HLEVEL: 1
-#+REVEAL_TITLE_SLIDE_BACKGROUND: bg1.jpg
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ../common_images/bg1.jpg
 #+OPTIONS: reveal-title-slide:<h1>%t</h1><h2 class='my-title'>%a</h2><h3 class='my-title'>Berlin Ethereum Meetup</h3><h3 class='my-title'>01/11/2016</h3>
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
@@ -19,25 +19,12 @@
 #+OPTIONS: reveal_slide_number:nil
 
 
-
-* Outline
+* Open Ethereum Problems
 :PROPERTIES:
-:reveal_background: ./bg1.jpg
+:reveal_background: ../common_images/bg1.jpg
 :END:
 #+REVEAL_HTML: <br />
 #+ATTR_HTML: :class spaciousbullets
-- *Section I:* Introduce what the Ethereum protocol is and go through its basic components.
-- *Section II:* Introduce what The DAO is.
-- *Section III:* Explain the how the DAO hack happened and what its consequences are.
-
-
-
-* Open Ethereum Problems
-:PROPERTIES:
-:reveal_background: ./bg1.jpg
-:END:
-#+NAME: Ethereum
-[[./images/ethereum.png]]
 
 - Scalability
 - Transaction Finality
@@ -45,14 +32,169 @@
 
 * Possible Solutions
 :PROPERTIES:
-:reveal_background: ./bg1.jpg
+:reveal_background: ../common_images/bg1.jpg
 :END:
-- *Off-chain transfers*: Distributed State and Computation via bilateral transfers
+*Off-chain transfers*: Distributed State and Computation via bilateral transfers
 #+NAME: 
-[[./images/offchain-transfers.png]]
-- *The Blockchain*: Replicated ledger for computations that provides
-     - Escrow
-     - Dispute Resolution
-     - Global State
+#+ATTR_HTML: :width 20% :height 20% :class compressed
+[[./images/offchaintransfer.png]]
+
+*The Blockchain*: Replicated ledger for computations
 #+NAME: 
+#+ATTR_HTML: :width 50% height: 50% :class compressed
 [[./images/blockchain.png]]
+
+#+BEGIN_NOTES
+The blockchain offers:
+   - Escrow
+   - Dispute Resolution
+   - Global State
+#+END_NOTES
+
+* What is the Raiden Network
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+
+- Off chain Asset Transfer Network
+- Similar to the Bitcoin Lightning Network
+- Under Development, working towards an MVP
+
+* Raiden Features
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+
+- Compatible with ERC20 Standard Token ABI
+- Instant Asset Transfers
+- Micropayments
+- Has potential to scale to even 1 million transactions per second.
+- Transactions are confidential
+
+* How Does It work
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+
+* Payment Channel
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+Comprised of a smart contract.
+
+- With a Deposit
+- Channel can be closed by any party
+- Channel settlement with challenge period
+
+* Payment Channel
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+
+All balances are updated off-chain.
+#+ATTR_HTML: :width 70% :height 70% :class noborder
+[[./images/channel.png]]
+
+* Bidirectional Channel
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+- Two deposits
+- Settlement is comprised of two netted balances
+- Nodes track their own balance
+#+ATTR_HTML: :width 70% :height 70% :class noborder
+[[./images/bidirectionalchannel.png]]
+
+* Chaining Channels
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+- Transfers between not connected parties can be mediated
+- HashLocks H(secret), still no trust required
+- Secret revealed once A learns, that C signed for D
+- Each node can charge a small fee
+#+ATTR_HTML: :width 70% :height 70% :class noborder
+[[./images/chainedchannel.png]]
+
+* Network of channels
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+- Routes between any two participants
+- Channels can be long lived, since transfers cancel out
+- Low Frequency of on-chain settlements.
+- Vast Majority of Transactions off-chain:
+  - Cheaper (no gas costs)
+  - Fast (no need to deal with the chain)
+  - Maintain no counterparty risk
+
+#+BEGIN_NOTES
+By embedding the payment conditional upon knowledge of a secure cryptographic
+ hash, payments can be made across a network of channels without the need for
+ any party to have unilateral custodial ownership of funds.
+ The Raiden Network enables what was previously not possible with trusted
+ financial systems vulnerable to monopolies—without the need for custodial
+ trust and ownership, participation on the network can be dynamic and open
+ for all. 
+#+END_NOTES
+
+* Example: Decentralized Exchange
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+- Need channel for both assets
+- Exchange intent is broadcast by the initiator
+  #+ATTR_HTML: :width 50% :height 50% :class noborder
+  [[./images/exchangeintent.png]]
+- Interested parties send an Exchange Request
+- Initiator accepts
+
+* 2 Transfers 1 Hashlock
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+Once the initiator accepts then: 
+- Two mediated transfers with the same Hashlock
+- Either both or none executes
+#+ATTR_HTML: :width 70% :height 70% :class noborder
+[[./images/twomediatedtransfers.png]]
+
+* Comparison with the Lightning Network
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+- Easier implementation thanks to Ethereum's EVM
+- Uncooperative participants don’t lock the channel
+- Works with any ERC20 compatible token
+- Interopable with smart contracts
+
+* Project Status
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+#+ATTR_HTML: :class spaciousbullets
+- Can be implemented with current version of Ethereum.
+- Demonstrated 500 transfers per CPU core per second.
+- Is a work in progress.
+
+* Project Status
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+#+ATTR_HTML: :class spaciousbullets
+Current milestone is POC-0
+#+ATTR_HTML: :width 70% :height 70% :class noborder
+[[./images/raiden_tx_0.gif]]
+
+* Project Status
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
+We are heading towards an MVP of Raiden, with the milestone coming out start of 2017.
+
+Help is really appreciated: https://github.com/raiden-network/raiden/
+
+* Thank you
+Any questions?
+
+For more updates follow me in Twitter/Github @lefterisjp
