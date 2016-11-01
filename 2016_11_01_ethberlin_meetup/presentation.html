@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Raiden Network</title>
+<meta name="author" content="(Lefteris  Karapetsas)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="./style.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'file:///home/lefteris/w/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="../common_images/bg1.jpg"><h1>Raiden Network</h1><br /> <br /><br /><h2 class='my-title'>Lefteris  Karapetsas</h2><h3 class='my-title'>Berlin Ethereum Meetup</h3><h3 class='my-title'>01/11/2016</h3>
+</section>
+
+
+<section>
+<section id="slide-org1020c29" data-background="../common_images/bg1.jpg">
+<h2 id="org1020c29">Open Ethereum Problems</h2>
+<br />
+
+<ul class="spaciousbullets">
+<li>Scalability</li>
+<li>Transaction Finality</li>
+<li>Transaction Privacy</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org92a20d4" data-background="../common_images/bg1.jpg">
+<h2 id="org92a20d4">A Possible Solution</h2>
+<p>
+<b>Off-chain transfers</b>: Distributed State and Computation via bilateral transfers
+</p>
+
+<div id="org6b0a859" class="figure">
+<p><img src="./images/offchaintransfer.png" alt="offchaintransfer.png" width="20%" height="20%" class="compressed" />
+</p>
+</div>
+
+<p>
+<b>The Blockchain</b>: Replicated ledger for computations
+</p>
+
+<div id="org352aa6c" class="figure">
+<p><img src="./images/blockchain.png" alt="blockchain.png" width="50% height: 50%" class="compressed" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+The blockchain offers:
+</p>
+<ul>
+<li>Escrow</li>
+<li>Dispute Resolution</li>
+<li>Global State</li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org6bb892c" data-background="../common_images/bg1.jpg">
+<h2 id="org6bb892c">What is the Raiden Network</h2>
+<br />
+
+<ul class="spaciousbullets">
+<li>Offchain Asset Transfer Network</li>
+<li>Similar to the Bitcoin Lightning Network</li>
+<li>Developed by Brainbot AG</li>
+<li>Under Development, working towards an MVP</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./images/bblogo.png" alt="bblogo.png" width="12% height: 12%" class="notransparency" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org0236685" data-background="../common_images/bg1.jpg">
+<h2 id="org0236685">Raiden Features</h2>
+<br />
+
+<ul class="spaciousbullets">
+<li>Compatible with ERC20 Standard Token ABI</li>
+<li>Instant Asset Transfers</li>
+<li>Micropayments</li>
+<li>Has potential to scale to even 1 million transactions per second.</li>
+<li>Transactions are confidential</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org46966d9" data-background="../common_images/bg1.jpg">
+<h2 id="org46966d9">How Does It work?</h2>
+<br />
+<br />
+<br />
+<br />
+
+<p>
+By utilizing something called payment channels.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgebad8a4" data-background="../common_images/bg1.jpg">
+<h2 id="orgebad8a4">Payment Channel</h2>
+<p>
+Comprised of a smart contract that:
+</p>
+
+<ul class="spaciousbullets">
+<li>Has a  Security Deposit</li>
+<li>Channel can be closed by any party</li>
+<li>Channel settlement with challenge period</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org6e8b586" data-background="../common_images/bg1.jpg">
+<h2 id="org6e8b586">Payment Channel</h2>
+<p>
+All balances are updated off-chain.
+</p>
+
+<div class="figure">
+<p><img src="./images/channel.png" alt="channel.png" width="70%" height="70%" class="noborder" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org8c76fbd" data-background="../common_images/bg1.jpg">
+<h2 id="org8c76fbd">Bidirectional Channel</h2>
+<ul>
+<li>Two deposits</li>
+<li>Settlement is comprised of two netted balances</li>
+<li>Each participant tracks both balances</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./images/bidirectionalchannel.png" alt="bidirectionalchannel.png" width="80%" height="80%" class="noborder" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org3376856" data-background="../common_images/bg1.jpg">
+<h2 id="org3376856">Chaining Channels</h2>
+<ul>
+<li>Transfers between not connected parties can be mediated</li>
+<li>Through using hashlocks there is no trust required.</li>
+<li>Secret revealed once A learns, that C signed for D</li>
+<li>Each node can charge a small fee</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./images/chainedchannel.png" alt="chainedchannel.png" width="70%" height="70%" class="noborder" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org77f6d48" data-background="../common_images/bg1.jpg">
+<h2 id="org77f6d48">Network of channels</h2>
+<ul class="spaciousbullets">
+<li>Routes between any two participants</li>
+<li>Channels can be long lived, since transfers cancel out</li>
+<li>Low Frequency of on-chain settlements.</li>
+<li>Vast Majority of Transactions off-chain:
+<ul>
+<li>Cheaper (no gas costs)</li>
+<li>Fast (no need to deal with the chain)</li>
+<li>Maintain no counterparty risk</li>
+
+</ul></li>
+
+</ul>
+
+<aside class="notes">
+<p>
+By embedding the payment conditional upon knowledge of a secure cryptographic
+ hash, payments can be made across a network of channels without the need for
+ any party to have unilateral custodial ownership of funds.
+ The Raiden Network enables what was previously not possible with trusted
+ financial systems vulnerable to monopolies—without the need for custodial
+ trust and ownership, participation on the network can be dynamic and open
+ for all. 
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org212f91b" data-background="../common_images/bg1.jpg">
+<h2 id="org212f91b">Example: Decentralized Exchange</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Need a channel open for both assets</li>
+<li><p>
+Exchange intent is broadcast by the initiator
+</p>
+
+<div class="figure">
+<p><img src="./images/exchangeintent.png" alt="exchangeintent.png" width="50%" height="50%" class="noborder" />
+</p>
+</div></li>
+<li>Interested parties send an Exchange Request</li>
+<li>Initiator accepts</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org66072c5" data-background="../common_images/bg1.jpg">
+<h2 id="org66072c5">2 Transfers with 1 Hashlock</h2>
+<br />
+<p>
+Once the initiator accepts then: 
+</p>
+<ul>
+<li>Two mediated transfers with the same Hashlock</li>
+<li>Either both or none executes</li>
+
+</ul>
+
+<div class="figure">
+<p><img src="./images/twomediatedtransfers.png" alt="twomediatedtransfers.png" width="70%" height="70%" class="noborder" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org650a099" data-background="../common_images/bg1.jpg">
+<h2 id="org650a099">Comparison with the Lightning Network</h2>
+<br />
+
+<ul class="spaciousbullets">
+<li>Easier implementation thanks to Ethereum's EVM</li>
+<li>Uncooperative participants don’t lock the channel</li>
+<li>Funds can be added to existing channels</li>
+<li>Works with any ERC20 compatible token</li>
+<li>Interopable with smart contracts</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org65d1444" data-background="../common_images/bg1.jpg">
+<h2 id="org65d1444">Project Status</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Can be implemented with current version of Ethereum.</li>
+<li>Demonstrated 500 transfers per CPU core per second.</li>
+<li>Is a work in progress.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb9dc2b1" data-background="../common_images/bg1.jpg">
+<h2 id="orgb9dc2b1">Project Status</h2>
+<p class="spaciousbullets">
+Current milestone is POC-0.
+</p>
+
+<div class="figure">
+<p><img src="./images/raiden_tx_0.gif" alt="raiden_tx_0.gif" width="70%" height="70%" class="noborder" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org4d8d2a1" data-background="../common_images/bg1.jpg">
+<h2 id="org4d8d2a1">Project Status</h2>
+<p>
+We are heading towards an MVP of Raiden, with the milestone coming out beginning of 2017.
+</p>
+
+<br />
+<p>
+Do you like python coding and love Ethereum? 
+</p>
+<br />
+
+<p>
+Help is really appreciated: <a href="https://github.com/raiden-network/raiden/">https://github.com/raiden-network/raiden/</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgcfd587a" data-background="../common_images/bg1.jpg">
+<h2 id="orgcfd587a">Thank you</h2>
+<p>
+Any questions?
+</p>
+
+<p>
+For more updates follow me in Twitter/Github:
+</p>
+<br />
+
+<p>
+<b>@lefterisjp</b>
+</p>
+
+
+<div class="figure">
+<p><img src="../common_images/lefteris.png" alt="lefteris.png" width="30%" height="30%" />
+</p>
+</div>
+</section>
+</section>
+</div>
+</div>
+<script src="file:///home/lefteris/w/reveal.js/lib/js/head.min.js"></script>
+<script src="file:///home/lefteris/w/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: false,
+history: true,
+center: false,
+slideNumber: false,
+rollingLinks: true,
+keyboard: true,
+overview: true,
+margin: 0.00,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'file:///home/lefteris/w/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

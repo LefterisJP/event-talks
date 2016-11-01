@@ -221,6 +221,11 @@ margin-top: 1.8em;
     border: 0px;
 }
 
+.reveal section img.notransparency {
+    background: rgba(255, 255, 255, 1);
+}
+  
+
 .opening_paragraph p{
     margin-bottom: 1em;
 }

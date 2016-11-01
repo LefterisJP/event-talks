@@ -5,7 +5,7 @@
 #+REVEAL_EXTRA_CSS: ./style.css
 #+REVEAL_HLEVEL: 1
 #+REVEAL_TITLE_SLIDE_BACKGROUND: ../common_images/bg1.jpg
-#+OPTIONS: reveal-title-slide:<h1>%t</h1><h2 class='my-title'>%a</h2><h3 class='my-title'>Berlin Ethereum Meetup</h3><h3 class='my-title'>01/11/2016</h3>
+#+OPTIONS: reveal-title-slide:nil
 #+OPTIONS: toc:nil
 #+OPTIONS: num:nil
 #+OPTIONS: reveal_control:t
@@ -24,13 +24,13 @@
 :reveal_background: ../common_images/bg1.jpg
 :END:
 #+REVEAL_HTML: <br />
-#+ATTR_HTML: :class spaciousbullets
 
+#+ATTR_HTML: :class spaciousbullets
 - Scalability
 - Transaction Finality
 - Transaction Privacy
 
-* Possible Solutions
+* A Possible Solution
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
@@ -56,33 +56,49 @@ The blockchain offers:
 :reveal_background: ../common_images/bg1.jpg
 :END:
 
-- Off chain Asset Transfer Network
+#+REVEAL_HTML: <br />
+
+#+ATTR_HTML: :class spaciousbullets
+- Offchain Asset Transfer Network
 - Similar to the Bitcoin Lightning Network
+- Developed by Brainbot AG
 - Under Development, working towards an MVP
+#+ATTR_HTML: :width 12% height: 12% :class notransparency
+[[./images/bblogo.png]]
 
 * Raiden Features
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
 
+#+REVEAL_HTML: <br />
+
+#+ATTR_HTML: :class spaciousbullets
 - Compatible with ERC20 Standard Token ABI
 - Instant Asset Transfers
 - Micropayments
 - Has potential to scale to even 1 million transactions per second.
 - Transactions are confidential
 
-* How Does It work
+* How Does It work?
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
+#+REVEAL_HTML: <br />
+#+REVEAL_HTML: <br />
+#+REVEAL_HTML: <br />
+#+REVEAL_HTML: <br />
+
+By utilizing something called payment channels.
 
 * Payment Channel
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
-Comprised of a smart contract.
+Comprised of a smart contract that:
 
-- With a Deposit
+#+ATTR_HTML: :class spaciousbullets
+- Has a  Security Deposit
 - Channel can be closed by any party
 - Channel settlement with challenge period
 
@@ -101,8 +117,8 @@ All balances are updated off-chain.
 :END:
 - Two deposits
 - Settlement is comprised of two netted balances
-- Nodes track their own balance
-#+ATTR_HTML: :width 70% :height 70% :class noborder
+- Each participant tracks both balances
+#+ATTR_HTML: :width 80% :height 80% :class noborder
 [[./images/bidirectionalchannel.png]]
 
 * Chaining Channels
@@ -110,7 +126,7 @@ All balances are updated off-chain.
 :reveal_background: ../common_images/bg1.jpg
 :END:
 - Transfers between not connected parties can be mediated
-- HashLocks H(secret), still no trust required
+- Through using hashlocks there is no trust required.
 - Secret revealed once A learns, that C signed for D
 - Each node can charge a small fee
 #+ATTR_HTML: :width 70% :height 70% :class noborder
@@ -120,6 +136,7 @@ All balances are updated off-chain.
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
+#+ATTR_HTML: :class spaciousbullets
 - Routes between any two participants
 - Channels can be long lived, since transfers cancel out
 - Low Frequency of on-chain settlements.
@@ -142,17 +159,21 @@ By embedding the payment conditional upon knowledge of a secure cryptographic
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
-- Need channel for both assets
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- Need a channel open for both assets
 - Exchange intent is broadcast by the initiator
   #+ATTR_HTML: :width 50% :height 50% :class noborder
   [[./images/exchangeintent.png]]
 - Interested parties send an Exchange Request
 - Initiator accepts
 
-* 2 Transfers 1 Hashlock
+* 2 Transfers with 1 Hashlock
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
+
+#+REVEAL_HTML: <br />
 Once the initiator accepts then: 
 - Two mediated transfers with the same Hashlock
 - Either both or none executes
@@ -163,8 +184,12 @@ Once the initiator accepts then:
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
+#+REVEAL_HTML: <br />
+
+#+ATTR_HTML: :class spaciousbullets
 - Easier implementation thanks to Ethereum's EVM
 - Uncooperative participants don’t lock the channel
+- Funds can be added to existing channels
 - Works with any ERC20 compatible token
 - Interopable with smart contracts
 
@@ -172,6 +197,7 @@ Once the initiator accepts then:
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
+#+REVEAL_HTML: <br />
 #+ATTR_HTML: :class spaciousbullets
 - Can be implemented with current version of Ethereum.
 - Demonstrated 500 transfers per CPU core per second.
@@ -182,7 +208,7 @@ Once the initiator accepts then:
 :reveal_background: ../common_images/bg1.jpg
 :END:
 #+ATTR_HTML: :class spaciousbullets
-Current milestone is POC-0
+Current milestone is POC-0.
 #+ATTR_HTML: :width 70% :height 70% :class noborder
 [[./images/raiden_tx_0.gif]]
 
@@ -190,11 +216,24 @@ Current milestone is POC-0
 :PROPERTIES:
 :reveal_background: ../common_images/bg1.jpg
 :END:
-We are heading towards an MVP of Raiden, with the milestone coming out start of 2017.
+We are heading towards an MVP of Raiden, with the milestone coming out beginning of 2017.
+
+#+REVEAL_HTML: <br />
+Do you like python coding and love Ethereum? 
+#+REVEAL_HTML: <br />
 
 Help is really appreciated: https://github.com/raiden-network/raiden/
 
 * Thank you
+:PROPERTIES:
+:reveal_background: ../common_images/bg1.jpg
+:END:
 Any questions?
 
-For more updates follow me in Twitter/Github @lefterisjp
+For more updates follow me in Twitter/Github:
+#+REVEAL_HTML: <br />
+
+ *@lefterisjp*
+
+#+ATTR_HTML: :width 30% :height 30%
+[[../common_images/lefteris.png]]
