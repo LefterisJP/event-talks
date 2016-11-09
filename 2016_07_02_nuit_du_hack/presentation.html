@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Ethereum, The DAO, the Hack</title>
+<meta name="author" content="(Lefteris  Karapetsas)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="./style.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'file:///home/lefteris/w/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="bg1.jpg"><h1 class="title">Ethereum, The DAO, the Hack</h1><h2 class="author">Lefteris  Karapetsas</h2><p class="date">Created: 2016-07-04 Mon 11:26</p>
+</section>
+
+
+
+<section>
+<section id="slide-orgb90af10" data-background="./bg1.jpg">
+<h2 id="orgb90af10">Who Am I?</h2>
+
+<div id="org645e183" class="figure">
+<p><img src="./images/lefteris.png" alt="lefteris.png" width="30%" height="30%" />
+</p>
+</div>
+<ul>
+<li>Passionate about Systems Programming and AI</li>
+<li>Worked in Ethereum since 2014, c++ core and Solidity Language</li>
+<li>Tech Lead of slock.it and DAO contributor</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org24cfa9c" data-background="./bg1.jpg">
+<h2 id="org24cfa9c">Outline</h2>
+<br />
+<ul class="spaciousbullets">
+<li><b>Section I:</b> Introduce what the Ethereum protocol is and go through its basic components.</li>
+<li><b>Section II:</b> Introduce what The DAO is.</li>
+<li><b>Section III:</b> Explain the how the DAO hack happened and what its consequences are.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc0ce03b" data-background="./bg1.jpg">
+<h2 id="orgc0ce03b">Section I - Ethereum</h2>
+
+<div id="orgcd407bd" class="figure">
+<p><img src="./images/ethereum.png" alt="ethereum.png" />
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgf13141a" data-background="./bg1.jpg">
+<h2 id="orgf13141a">Ethereum</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Public blockain platform</li>
+<li>Programmable transactions</li>
+<li>Ethereum Virtual Machine</li>
+<li>Smart Contracts and Dapps.</li>
+
+</ul>
+<aside class="notes">
+<p>
+Ethereum is a public blockchain platform with programmable transaction functionality. It provides
+a decentralized virtual machine that can execute peer-to-peer contracts using a cryptocurrency
+called Ether. 
+</p>
+
+<p>
+People can write programs that are deployed in the ethereum blockchain. These programs have come
+to be known as smart contracts. They function as little black boxes of code that execute their code as soon as they are activated by some external stimuli.
+</p>
+
+<p>
+The blockchain combined with the smart contracts is what makes Ethereum a unique blockchain platform
+for what we have come to refer to as Decentralized Applications (Dapps). Such applications could be
+Token Systems, Identity and Reputation Systems, Decentralized Autonomous Organizations etc.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org91905f" data-background="./bg1.jpg">
+<h2 id="org91905f">Ethereum Blockchain</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Nodes create transactions and send them to the network</li>
+<li>Miners get the transactions, verify them and include them in their blocks.</li>
+<li>All nodes sync new blocks from the network and thus build the blockchain.</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Every user that runs an Ethereum node and has an account can create trasnactions and push them to
+the network.
+</p>
+
+<p>
+Miners are the people who create new blocks and add them to the blockchain. They verify
+all the transactions that exist in the network and if succesfull include them in the new
+blocks they are creating.
+</p>
+
+<p>
+All ethereum nodes continuously synchronize with the network, download new blocks and after verifying
+them they add them to their local copy of the blockchain. This is how the blockchain's ledger is
+continuously being built all around the world in a decentralized fashion
+</p>
+
+<p>
+The Ethereum blockchain is in many ways similar to the Bitcoin blockchain, although it does have some differences.
+The main difference between Ethereum and Bitcoin with regard to the blockchain architecture is that, unlike Bitcoin,
+Ethereum blocks contain a copy of both the transaction list and the most recent state. Aside from that, two other values,
+the block number and the difficulty, are also stored in the block. 
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org6e532de" data-background="./bg1.jpg">
+<h2 id="org6e532de">Accounts</h2>
+
+<div id="orgd4184a" class="figure">
+<p><img src="./images/account.png" alt="account.png" width="75% height: 75%" />
+</p>
+</div>
+
+<ul>
+<li>Generated from an ECDSA private/public key pair</li>
+<li>Has a certain balance</li>
+<li>Separated in:
+<ul>
+<li>Externally Owned Accounts</li>
+<li>Contract accounts</li>
+
+</ul></li>
+
+</ul>
+
+
+<aside class="notes">
+<p>
+Each ethereum account address is generated from the ECDSA private key/public key pair. A pair of keys
+according to the ECDSA algorithm is created and then the ethereum address will be the rightmost
+20-bytes of the public key.
+</p>
+
+<p>
+An account contains 4 fields:
+</p>
+<ol>
+<li>The nonce, a counter used to make sure each transaction can only be processed once.</li>
+<li>The account's current balance</li>
+<li>The account's code. Can also be NULL.</li>
+<li>The account's storage. Is empty by default.</li>
+
+</ol>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaa8baf" data-background="./bg1.jpg">
+<h2 id="orgaa8baf">Ether</h2>
+
+<div id="org870c918" class="figure">
+<p><img src="./images/ether.jpg" alt="ether.jpg" width="35% height: 35%" />
+</p>
+</div>
+
+<p>
+Ether is the token that fuels the Ethereum Ecosystem.
+</p>
+
+<ul>
+<li>10<sup>18</sup> Wei</li>
+<li>10<sup>6</sup>  Szabo</li>
+<li>10<sup>3</sup>  Finney</li>
+
+</ul>
+<aside class="notes">
+<p>
+Ether is the token that fuels the Ethereum Ecosystem.
+Due to the amount of computational steps required in many of the parts of the Ethereum ecosystem
+you will often see many denominations of Ether. One ether is equal to:
+</p>
+
+<ul>
+<li>10<sup>18</sup> Wei</li>
+<li>10<sup>15</sup> Kwei</li>
+<li>10<sup>12</sup> Mwei</li>
+<li>10<sup>9</sup>  Gwei</li>
+<li>10<sup>6</sup>  Szabo</li>
+<li>10<sup>3</sup>  Finney</li>
+
+</ul>
+
+<p>
+Right now 1 Ether is prices at roughly a bit above 10 EUR
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf7b94ea" data-background="./bg1.jpg">
+<h2 id="orgf7b94ea">Gas</h2>
+
+<div id="orgfd3be31" class="figure">
+<p><img src="./images/gas.png" alt="gas.png" width="45% height: 45%" />
+</p>
+</div>
+
+<ul>
+<li class="fragment appear">Every opcode in the EVM costs Gas</li>
+<li class="fragment appear">Price in ETH is determined by the <i>GasPrice</i></li>
+<li class="fragment appear">You will end up needing more of it</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Gas is very important in the Ethereum ecosystem. It's what is used for the anti denial of service property
+of Ethereum. In order to prevent accidental or hostile infinite loops each compuatational step has an associated
+cost. The fundamental unit of computation is Gas. Most computations cost 1 Gas but as expected some computations
+cost more because they increase amount of data that must be stored as part of the state.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org9e6e9b6" data-background="./bg1.jpg">
+<h2 id="org9e6e9b6">PoW Mining</h2>
+
+<div id="org18995e6" class="figure">
+<p><img src="./images/mining_rig.jpg" alt="mining_rig.jpg" width="55% height: 55%" />
+</p>
+</div>
+<aside class="notes">
+<p>
+Mining is the implementation of the concensus system by all the nodes in the network.
+Nodes in the network continuously attempt to produce packages of transactions called "blocks".
+each block containing a timestamp, a nonce, a reference to (ie. hash of) the previous block
+and a list of all of the transactions that have taken place since the previous block.
+Over time, this creates a persistent, ever-growing, "blockchain" that constantly updates
+to represent the latest state of the ledger.
+</p>
+
+<p>
+Ethash is the Proof Of Work algorithm used in the Ethereum network atm. It's the algorithm
+that is used to either verify an existing block or mine a new block. It is a modified version of
+the Dagger Hashimoto Algorithm.
+</p>
+
+<p>
+DIFFERENCES TO BITCOIN:
+The main difference with the Bitcoin PoW algorithm is the fact that Ethash is designed to be ASIC resistant.
+An ASIC (application-specific integrated circuit) is a microchip designed for a special application, in this case crypto currency mining algorithms.
+ASICs are considered really harmful by the community and it was a high priority to have an ASIC resistant algorithm.
+</p>
+
+<p>
+The ASIC resistnce is This is achieved by requiring a lot of memory, which when implemented on an ASIC, translates to needing lots of physical area on the chip.
+ASIC implementations derive their power from having many physically parallel and pipelined threads on one chip, each requiring a certain
+piece of chip real estate. Now if your algorithm requires lots of real estate even for one step of the pipeline, there will not
+be much room to actually parallelize or pipeline the algorithm. Thereby you will lose the parallelizing advantage of an ASIC implementation.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orga9bb035" data-background="./bg1.jpg">
+<h2 id="orga9bb035">Transactions</h2>
+
+<div id="orgb3585f2" class="figure">
+<p><img src="./images/transaction.png" alt="transaction.png" width="55% height: 55%" />
+</p>
+</div>
+
+<p>
+Signed messages sent from externally owned accounts
+</p>
+<ul>
+<li>Contain fields with details of the transaction.</li>
+<li>They cost gas</li>
+<li>Contracts execute code when receiving them</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+A transaction in Ethereum is a signed data message that's sent from an externally owned account.
+A transaction contains:
+</p>
+<ul>
+<li>The message's recipient</li>
+<li>The message's sender identified by a Signature.</li>
+<li>The amount of ether to be transferred. This is called <b>endowment</b> for contract creation transactions.</li>
+<li>An optional data field.</li>
+<li>A <b>Gas</b> value. Represent the maximum gas to be used and to be credited to the sender's account.
+If the sender does not have enough gas or if the amount of gas required for the transaction exceeds
+this limit, then the transaction is rejected.</li>
+<li>A <b>GASPrice</b>. The price of Gas in ether. Basically the fee the sender pays per computational step.
+Default is 50 Shannon.</li>
+
+</ul>
+
+<p>
+If the message's recipient is a contract then its code will be executed.
+</p>
+
+<p>
+The optional data field also adds to the transaction's Gas since there is a fee of 5 Gas for each byte of the Data.
+With the existence of the Gas System an attacker is required to pay roportionately for every resource that they
+consume, including computation, bandwidth and storage; hence, any transaction that leads to the network consuming a
+greater amount of any of these resources must have a gas fee roughly proportional to the increment.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd297a08" data-background="./bg1.jpg">
+<h2 id="orgd297a08">Messages</h2>
+
+<div id="org3620a4a" class="figure">
+<p><img src="./images/contractmessages.png" alt="contractmessages.png" />
+</p>
+</div>
+
+<ul>
+<li>Exist only in the execution environment</li>
+<li>Same attributes as transactions</li>
+<li>May have a limited gas stipend</li>
+
+</ul>
+
+
+<aside class="notes">
+<p>
+Contracts have the ability to send "messages" to other contracts. Messages are virtual objects that are never serialized
+and exist only in the Ethereum execution environment. A message contains:
+</p>
+
+<ul>
+<li>The sender of the message</li>
+<li>The recipient of the message</li>
+<li>The amount of ether to transfer with the message</li>
+<li>An optional data field.</li>
+<li>A <b>Gas</b> value.</li>
+
+</ul>
+
+<p>
+A message then, is like a transaction with the main difference that it is produced by a contract and not by an
+externally owned account. Whenever a contract execute's the <b>CALL</b> opcode a message is produced and executed.
+</p>
+
+<p>
+Also like a transaction if a message's recipient is a contract then its code will be executed. In this way
+contracts can actually interact with each other.
+</p>
+
+<p>
+Note than in such case the Gas allowance applies to both the contract and any other contracts it calls to.
+For example, if an external actor A sends a transaction to B with 1000 gas, and B consumes 600 gas before
+sending a message to C, and the internal execution of C consumes 300 gas before returning, then B can spend
+another 100 gas before running out of gas.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orge30e12a" data-background="./bg1.jpg">
+<h2 id="orge30e12a">State transition</h2>
+
+<div id="org5446e6d" class="figure">
+<p><img src="./images/state_transition.png" alt="state_transition.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+The Ethereum state transition function, <code>APPLY(S,TX)-&gt;'S</code> can be defined as:
+</p>
+
+<ol>
+<li>Check if the transaction is well-formed (ie. has the right number of values), the signature is valid, and
+the nonce matches the nonce in the sender's account. If not, return an error.</li>
+<li>Calculate the transaction fee as STARTGAS * GASPRICE, and determine the sending address from the signature.
+Subtract the fee from the sender's account balance and increment the sender's nonce. If there is not enough balance to spend, return an error.</li>
+<li>Initialize GAS = STARTGAS, and take off a certain quantity of gas per byte to pay for the bytes in the transaction.</li>
+<li>Transfer the transaction value from the sender's account to the receiving account. If the receiving account does not yet exist, create it. If the receiving account is a contract, run the contract's code either to completion or until the execution runs out of gas.</li>
+<li>If the value transfer failed because the sender did not have enough money, or the code execution ran out of gas, revert all state changes except the payment of the fees, and add the fees to the miner's account.</li>
+<li>Otherwise, refund the fees for all remaining gas to the sender, and send the fees paid for gas consumed to the miner.</li>
+
+</ol>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org32af6ec" data-background="./bg1.jpg">
+<h2 id="org32af6ec">Ethereum VM</h2>
+
+<div id="org438f9c5" class="figure">
+<p><img src="./images/evm.png" alt="evm.png" />
+</p>
+</div>
+<aside class="notes">
+<p>
+The code in Ethereum contracts is written in a low-level, stack-based bytecode language, referred to as
+"Ethereum virtual machine code" or "EVM code".
+</p>
+
+<p>
+The code consists of a series of bytes, where each byte represents an operation. In general, code execution
+is an infinite loop that consists of repeatedly carrying out the operation at the current program counter
+(which begins at zero) and then incrementing the program counter by one, until the end of the code is reached
+ or an error or STOP or RETURN instruction is detected.
+</p>
+
+<p>
+All computations have access to three places where they can store data:
+</p>
+
+<ul>
+<li>The <b>Stack</b>, a LIFO container to which values are pushed and popped.</li>
+<li><b>Memory</b> an infinitely expandable byte array</li>
+<li>The long term <b>storage</b> of the contract which is a key/value store. Unlike stack and memory which reset
+once a computation ends, storage persists for the long term.</li>
+
+</ul>
+
+<p>
+The code can also access the value, sender and data of the incoming message, as well as block header data,
+and the code can also return a byte array of data as an output.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org2ce502d" data-background="./bg1.jpg">
+<h2 id="org2ce502d">EVM Languages</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Solidity</li>
+<li>Serpent</li>
+<li>Mutan</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org14c8d75" data-background="./bg1.jpg">
+<h2 id="org14c8d75">Solidity</h2>
+
+<div id="orge406a9b" class="figure">
+<p><img src="./images/solidity.png" alt="solidity.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Generally speak about solidity
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orgeb7af60" data-background="./bg1.jpg">
+<h2 id="orgeb7af60">Ðapps</h2>
+<br />
+<ul class="spaciousbullets">
+<li>Decentralized Applications</li>
+<li>Consisting of:
+<ul>
+<li>Set of smart contracts</li>
+<li>Client side code that interacts with the contracts</li>
+<li>An Ethereum client</li>
+
+</ul></li>
+
+</ul>
+
+<aside class="notes">
+<p>
+The available multiplicity of Ethereum development languages is important because it enables
+developers to pick the ones they like in order to more easily and efficiently write Decentralized
+Applications (ÐApps).
+</p>
+
+<p>
+A ÐApp is the combined set of smart contracts and client-side code that enables them. Smart
+contracts are like cryptographic “boxes” that contain a value and only unlock it if certain
+conditions are met. They typically encapsulate some logic, rules, a process, or an agreement
+between parties.
+</p>
+
+<p>
+A ÐApp can be viewed architecturally as being very similar to a traditional web application,
+with one difference: in a traditional web application, you have client side Javascript code
+that is run by users inside their browsers and server-side code that is run by a host or
+company; but in a ÐApp, you instead have smart logic running on the blockchain, and client side code
+running in one of the Ethereum Clients.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orgaca3cd5" data-background="./bg1.jpg">
+<h2 id="orgaca3cd5">Ðapps</h2>
+<p>
+Prediction Markets
+</p>
+
+
+<div id="org61ee4e5" class="figure">
+<p><img src="./images/augurlogo.png" alt="augurlogo.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgab6c171" data-background="./bg1.jpg">
+<h2 id="orgab6c171">Ðapps</h2>
+<p>
+Decentralized Social Networks
+</p>
+
+
+<div id="org931601b" class="figure">
+<p><img src="./images/akasha.png" alt="akasha.png" width="40% height: 40%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org19fce24" data-background="./bg1.jpg">
+<h2 id="org19fce24">Ðapps</h2>
+<p>
+Decentralized Autonomous Organizations
+</p>
+
+
+<div id="org1b5ce22" class="figure">
+<p><img src="./images/ethdao.png" alt="ethdao.png" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgbd4b867" data-background="./bg1.jpg">
+<h2 id="orgbd4b867">Section II - The DAO</h2>
+
+<div id="orgbd47b8b" class="figure">
+<p><img src="./images/daologo.png" alt="daologo.png" width="58% height: 58%" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orge32ad4a" data-background="./bg1.jpg">
+<h2 id="orge32ad4a">The DAO - Overview</h2>
+
+<div id="org66f8219" class="figure">
+<p><img src="./images/daooverview.png" alt="daooverview.png" width="55% height: 55%" />
+</p>
+</div>
+<aside class="notes">
+<p>
+The DAO is a Decentralized Autonomous Organization (“DAO”) - more specifically, it is a new breed of human organization
+never before attempted. The DAO is borne from immutable, unstoppable, and irrefutable computer code, operated entirely by
+its members, and fueled using ETH which Creates DAO tokens. Several aspects of this structure make it revolutionary:
+</p>
+
+<p>
+Inclusion: The DAO leverages smart contracts on the Ethereum blockchain so that anyone, anywhere in the world can be
+empowered to participate. In exchange for their early help, participants receive DAO tokens which hold many benefits.
+</p>
+
+<p>
+Flexibility: The DAO backs Proposals which it selects for their innovative nature, to be delivered by Contractors. Some 
+of these Proposals could hold no promise of return whatsoever (in the case of a charity for example), others could involve
+the building of products or services which The DAO could then use for its own purposes.
+</p>
+
+<p>
+Profitability and Growth: The DAO charges for the use of its the products or services. This revenue is then sent directly
+to The DAO in the form of ETH. The DAO then has the option to accumulate this ETH to support its growth, or redistribute
+it to the DAO Token Holders as a reward.
+</p>
+
+<p>
+Autonomous Governance: The ETH held by The DAO will never be centrally managed. DAO Token Holders are able to vote on
+important decisions relating to the management of The DAO, including the power to redistribute its ETH amongst themselves.
+</p>
+
+<p>
+The DAO, represented by smart contracts on the Ethereum blockchain at address 0xbb9bc244d798123fde783fcc1c72d3bb8c189413,
+intends to back a series of Proposals to create products or services. The DAO Token Holders will then leverage these
+product or services, or charge others for using them.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org52dfdd6" data-background="./bg1.jpg">
+<h2 id="org52dfdd6">The DAO - Development</h2>
+<p>
+Over 860 commits by 18 contributors.
+</p>
+
+<div id="org4eedad2" class="figure">
+<p><img src="./images/development.png" alt="development.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb02dbb1" data-background="./bg1.jpg">
+<h2 id="orgb02dbb1">The DAO - Development</h2>
+<ul>
+<li>Development started a year ago</li>
+<li>Developed by:
+<ul>
+<li>slock.it members</li>
+<li>ethereum community members</li>
+
+</ul></li>
+<li>Audited by Dejavu security and many members of the Ethereum community</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org8064a8e" data-background="./bg1.jpg">
+<h2 id="org8064a8e">The DAO - Tokens</h2>
+
+<div id="org88a312c" class="figure">
+<p><img src="./images/daotoken.png" alt="daotoken.png" width="20% height: 20%" />
+</p>
+</div>
+
+<ul>
+<li>Represent how much of the Ether in the DAO is owned by the holder</li>
+<li>Represent amount of voting power the holder has in proposals.</li>
+<li>Are fungible</li>
+<li>Are tradeable</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+Explain &#x2026;
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org5294e05" data-background="./bg1.jpg">
+<h2 id="org5294e05">The DAO - Curator</h2>
+
+<div id="org47bcc9" class="figure">
+<p><img src="./images/curator.png" alt="curator.png" width="48% height: 48%" />
+</p>
+</div>
+<aside class="notes">
+<p>
+A Curator is a failsafe mechanism that indirectly prevents malicious actors from executing 51% attack.
+Curators do not add centralization to the DAO: they are nominated by the DAO Token Holders themselves,
+and can be fired at any time, for any reason. Curators curate the whitelist, the list of Contractors
+authorized to receive ether from the DAO.
+</p>
+
+<p>
+Note that the above has an added advantage: it prevents someone from acquiring 51% of the tokens then passing a Proposal sending himself 100% of The DAO’s ETH. This idea originates from a blog post by Vitalik Buterin. The very possibility of a split indeed renders this attack moot: the legit minority would stay with its current Curator holding 100% of their own ETH, while the majority attacker would be left without Curator, and with only the ETH they put in themsel
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org435061d" data-background="./bg1.jpg">
+<h2 id="org435061d">The DAO - Proposals</h2>
+<p>
+The way for DTH to influence the actions of the DAO.
+</p>
+
+<div id="org3e7bc27" class="figure">
+<p><img src="./images/proposal2.png" alt="proposal2.png" />
+</p>
+</div>
+<aside class="notes">
+<p>
+Explain what proposals are &#x2026;
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc553ea0" data-background="./bg1.jpg">
+<h2 id="orgc553ea0">The DAO - Proposals</h2>
+<br />
+<ul class="spaciousbullets">
+<li>14 days of debate period</li>
+<li>2 ETH deposit, returned if quorum reached</li>
+<li>Require majority vote</li>
+<li>Require quorum ranging from 20% to 53.3% of DTH to be met</li>
+<li>Specify a transaction that the DAO should perform</li>
+
+</ul>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org1cfe48f" data-background="./bg1.jpg">
+<h2 id="org1cfe48f">The DAO - Splits</h2>
+<p>
+A way for DTH to get out
+</p>
+<ul>
+<li>Done via a special 7 day proposal</li>
+<li>Moves ether and create tokens in a new DAO</li>
+<li>Burns the old DAO tokens</li>
+
+</ul>
+
+<div id="orga4663e9" class="figure">
+<p><img src="./images/split.png" alt="split.png" />
+</p>
+</div>
+<aside class="notes">
+<p>
+Token holders may end up wanting to change the curators or create their own mini-DAO. This is possible through a process
+called splitting. The split is a way for people to move out of the main DAO and move the ether that was backing their tokens
+into the new Child DAO.
+</p>
+
+<p>
+The tokens they owned in the main DAO are burned and new tokens are created in the child DAO. This is done via a special
+proposal to the DAO, called the Split Proposal. A split proposal:
+</p>
+
+<ul>
+<li>Requires 7 days to mature once created</li>
+<li>During this maturity period anyone who wants to join the split has to vote for it</li>
+<li>After the period expires by calling the <code>splitDAO()</code> function anyone can join the new DAO</li>
+<li>The new DAO goes through a 27 Days  creation phase much like the original DAO.</li>
+
+</ul>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-orge111b0b" data-background="./bg1.jpg">
+<h2 id="orge111b0b">The DAO - Creation</h2>
+<ul>
+<li>Created on the 30th of April 2016</li>
+<li>28 days of the fueling phase of the DAO</li>
+<li>Linear price increase after 14 days</li>
+<li>12.1 Million Ether raised</li>
+
+</ul>
+
+<div id="org111c50" class="figure">
+<p><img src="./images/creationphase.jpg" alt="creationphase.jpg" width="58% height: 58%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbcd70de" data-background="./bg1.jpg">
+<h2 id="orgbcd70de">The DAO - PostCreation</h2>
+<p>
+Many companies made very interesting proposals to the DAO
+</p>
+
+
+<div id="org42276a1" class="figure">
+<p><img src="./images/mobotiqproposal.png" alt="mobotiqproposal.png" width="43% height: 43%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org2b3f728" data-background="./bg1.jpg">
+<h2 id="org2b3f728">The DAO - PostCreation</h2>
+<p>
+My company slock.it was preparing the USN Proposal
+</p>
+
+
+<div id="org1a96111" class="figure">
+<p><img src="./images/slockit_usn.jpg" alt="slockit_usn.jpg" width="55% height: 55%" />
+</p>
+</div>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org8e03dbe" data-background="./bg1.jpg">
+<h2 id="org8e03dbe">The DAO - PostCreation</h2>
+<p>
+Next versions of the DAO were being prepared
+</p>
+
+
+<div id="org344c149" class="figure">
+<p><img src="./images/daonext.png" alt="daonext.png" width="42% height: 42%" />
+</p>
+</div>
+
+
+
+
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgd767b20" data-background="./bg1.jpg">
+<h2 id="orgd767b20">The DAO - PostCreation</h2>
+<p>
+A path forward was set for the DAO with the DAO Improvements proposals
+</p>
+
+
+<div id="org1d9a81" class="figure">
+<p><img src="./images/dirs.jpeg" alt="dirs.jpeg" width="50% height: 50%" />
+</p>
+</div>
+
+
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org71e0386" data-background="./bg1.jpg">
+<h2 id="org71e0386">Section III - The Hack</h2>
+
+<div id="org2a57a77" class="figure">
+<p><img src="./images/daohack.jpg" alt="daohack.jpg" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgdfbf868" data-background="./bg1.jpg">
+<h2 id="orgdfbf868">Smart Contract Security</h2>
+<p>
+10th of June: Solidity anti-pattern becomes known
+</p>
+
+<div id="orge1c64b" class="figure">
+<p><img src="./images/contractsecuritypost.png" alt="contractsecuritypost.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Bla
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org123c8ab" data-background="./bg1.jpg">
+<h2 id="org123c8ab">Smart Contract Security</h2>
+
+<div id="orge12af6e" class="figure">
+<p><img src="./images/exploit_explanation1.png" alt="exploit_explanation1.png" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org4aad9b4" data-background="./bg1.jpg">
+<h2 id="org4aad9b4">Smart Contract Security</h2>
+
+<div id="org2833ac0" class="figure">
+<p><img src="./images/exploit_explanation2.png" alt="exploit_explanation2.png" />
+</p>
+</div>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org52532fe" data-background="./bg1.jpg">
+<h2 id="org52532fe">Deployed Dapps are affected</h2>
+<p>
+11th of June: Maker DAO is brought down
+</p>
+
+<div id="org3f63f30" class="figure">
+<p><img src="./images/makerdao.png" alt="makerdao.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+Bla
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb17c5b2" data-background="./bg1.jpg">
+<h2 id="orgb17c5b2">The DAO affected</h2>
+<p>
+12th of June
+</p>
+<ul>
+<li>Exploit discovered in <code>refund()</code></li>
+<li>Exploit discovered in <code>newContract()</code></li>
+<li>Exploit discovered in <code>executeProposal()</code></li>
+<li>Exploit discovered in <code>withdrawRewardFor()</code></li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org8cd21df" data-background="./bg1.jpg">
+<h2 id="org8cd21df">The DAO affected</h2>
+
+<div id="org51e8a25" class="figure">
+<p><img src="./images/withdrawreward.png" alt="withdrawreward.png" width="65% height: 65%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org501af48" data-background="./bg1.jpg">
+<h2 id="org501af48">Disaster strikes</h2>
+<p>
+17th of June 06:00 CET
+</p>
+
+<div id="org48d884b" class="figure">
+<p><img src="./images/attacktime.png" alt="attacktime.png" width="80% height: 80%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org84b7e98" data-background="./bg1.jpg">
+<h2 id="org84b7e98">Disaster strikes</h2>
+<p>
+The vulnerability was in a combination of splitDAO() and withdrawRewardFor()
+</p>
+
+<div id="orga46c2c6" class="figure">
+<p><img src="./images/exploit1.png" alt="exploit1.png" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org42cc92a" data-background="./bg1.jpg">
+<h2 id="org42cc92a">Disaster strikes</h2>
+<p>
+The vulnerability was in a combination of splitDAO() and withdrawRewardFor()
+</p>
+
+<div id="orge3900f7" class="figure">
+<p><img src="./images/exploit2.png" alt="exploit2.png" />
+</p>
+</div>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgb96fcf8" data-background="./bg1.jpg">
+<h2 id="orgb96fcf8">Rise of The Dark DAO</h2>
+<ul>
+<li>3,641,694 ETH are stolen</li>
+<li>Frozen inside the Dark DAO until the 14th of July</li>
+<li>Attacker controls both accounts in that DAO</li>
+
+</ul>
+
+<div id="org3c44b55" class="figure">
+<p><img src="./images/darkdao.png" alt="darkdao.png" width="55% height: 55%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orge18f73b" data-background="./bg1.jpg">
+<h2 id="orge18f73b">Immediate Aftermath</h2>
+<ul>
+<li>DAO Market crash</li>
+<li>DAO price fell to almost 0.005 ETH</li>
+
+</ul>
+
+<div id="org118891" class="figure">
+<p><img src="./images/daomarket.png" alt="daomarket.png" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org7e04ad2" data-background="./bg1.jpg">
+<h2 id="org7e04ad2">Immediate Aftermath</h2>
+<p>
+People joined random splits about to mature at the time.
+</p>
+
+<div id="org99afcb8" class="figure">
+<p><img src="./images/panick_splits.png" alt="panick_splits.png" width="68% height: 68%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orge611e5c" data-background="./bg1.jpg">
+<h2 id="orge611e5c">Internet explodes</h2>
+<ul>
+<li>All major news outlets report on the hack</li>
+<li>ETH price goes on a freefall</li>
+
+</ul>
+
+<div id="org3ddfee4" class="figure">
+<p><img src="./images/netexplodes.png" alt="netexplodes.png" width="58% height: 58%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org40d548" data-background="./bg1.jpg">
+<h2 id="org40d548">Whitehat Siphoning</h2>
+<ul>
+<li>DAO was a hacker picnic</li>
+<li>The remaining money was not safe</li>
+
+</ul>
+
+<div id="orgd1217b2" class="figure">
+<p><img src="./images/siphoning.png" alt="siphoning.png" width="30% height: 30%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org97f0468" data-background="./bg1.jpg">
+<h2 id="org97f0468">Whitehat DAOs</h2>
+<ul>
+<li>2 Whitehat DAOS were created</li>
+<li>They control 7,630,621 ETH</li>
+
+</ul>
+
+<div id="orgce3c620" class="figure">
+<p><img src="./images/whitehatdaos.png" alt="whitehatdaos.png" />
+</p>
+</div>
+<aside class="notes">
+<p>
+They control 7.63/12.1 M ETH so about 63% of the total ETH.
+</p>
+
+</aside>
+</section>
+</section>
+<section>
+<section id="slide-org8bc02a" data-background="./bg1.jpg">
+<h2 id="org8bc02a">Counterattack</h2>
+<ul>
+<li>Introduced on 19th of June</li>
+<li>Empowers DTH to strike back</li>
+
+</ul>
+
+<div id="org825f0e4" class="figure">
+<p><img src="./images/privatecreation.png" alt="privatecreation.png" width="55% height: 55%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org93bff3f" data-background="./bg1.jpg">
+<h2 id="org93bff3f">Counterattack</h2>
+
+<div id="orgf0470e6" class="figure">
+<p><img src="./images/daowars.jpg" alt="daowars.jpg" />
+</p>
+</div>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-org6a62a5f" data-background="./bg1.jpg">
+<h2 id="org6a62a5f">Soft Fork Proposal</h2>
+<ul>
+<li>Is temporary</li>
+<li>Blacklists certain types transactions</li>
+<li>Adoption can only be decided by the miners</li>
+
+</ul>
+
+<div id="org5bc7391" class="figure">
+<p><img src="./images/softfork_vote.png" alt="softfork_vote.png" width="50% height: 50%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf968e19" data-background="./bg1.jpg">
+<h2 id="orgf968e19">Soft Fork Rejection</h2>
+<ul>
+<li>DDOS vulnerability was detected</li>
+<li>Imposing censorship on Ethereum will not work</li>
+<li>Release to undo the soft fork was immediate</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre  class="src src-c++"><span style="color: #859900; font-weight: bold;">for</span> <span style="color: #2aa198;">(</span><span style="color: #b58900;">uint32</span> <span style="color: #268bd2;">i</span> = 0; i &lt; 1000000; i++<span style="color: #2aa198;">)</span> <span style="color: #2aa198;">{</span>
+   sha3<span style="color: #b58900;">(</span><span style="color: #2aa198;">'some data'</span><span style="color: #b58900;">)</span>; <span style="color: #586e75;">// </span><span style="color: #586e75;">costly computation</span>
+<span style="color: #2aa198;">}</span>
+dao.splitDAO<span style="color: #2aa198;">(</span>...<span style="color: #2aa198;">)</span>; <span style="color: #586e75;">// </span><span style="color: #586e75;">render the transaction invalid</span>
+</pre>
+</div>
+
+<div id="org2be70fb" class="figure">
+<p><img src="./images/gun_tweet.png" alt="gun_tweet.png" class="fragment (appear)" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org129cdd9" data-background="./bg1.jpg">
+<h2 id="org129cdd9">Hard Fork</h2>
+<ul>
+<li>Protocol change after a specific block</li>
+<li>All ETH is moved back to the DAO account</li>
+<li>The DAO code is replaced by a simple refund contract</li>
+
+</ul>
+
+<div id="org91b2b7d" class="figure">
+<p><img src="./images/hardfork.jpg" alt="hardfork.jpg" width="38% height: 38%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org6f4d705" data-background="./bg1.jpg">
+<h2 id="org6f4d705">The Road Ahead</h2>
+<p>
+A lot of decisions ahead for the Ethereum Ecosystem
+</p>
+
+<div id="org13d74ab" class="figure">
+<p><img src="./images/fork_in_the_road.jpg" alt="fork_in_the_road.jpg" width="65% height: 65%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgfaa326b" data-background="./bg1.jpg">
+<h2 id="orgfaa326b">Lessons Learned</h2>
+<br />
+<ul class="spaciousbullets">
+<li class="fragment appear">Ecosystem not mature enough yet for totally autonomous contracts</li>
+<li class="fragment appear">Kill switches should exist</li>
+<li class="fragment appear">Smart contracts should use assertion-based programming</li>
+<li class="fragment appear">New EVM languages with formal proofing may be needed</li>
+<li class="fragment appear">Security and auditing of smart contracts should be top priority</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgbcc02d5" data-background="./bg1.jpg">
+<h2 id="orgbcc02d5">End</h2>
+<br />
+<p>
+Thank you for your attention!
+</p>
+<br />
+<p>
+Follow me Twitter/Github: @lefterisjp
+</p>
+<br />
+<p>
+Questions?
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="file:///home/lefteris/w/reveal.js/lib/js/head.min.js"></script>
+<script src="file:///home/lefteris/w/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: false,
+history: true,
+center: false,
+slideNumber: false,
+rollingLinks: true,
+keyboard: true,
+overview: true,
+margin: 0.00,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'file:///home/lefteris/w/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>

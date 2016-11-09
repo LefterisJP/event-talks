@@ -1,0 +1,851 @@
+#+Title: Ethereum, The DAO, the Hack
+#+Author: Lefteris  Karapetsas
+#+Email: lefteris@refu.co
+#+REVEAL_MARGIN: 0.0001
+#+REVEAL_EXTRA_CSS: ./style.css
+#+REVEAL_HLEVEL: 1
+#+REVEAL_TITLE_SLIDE_BACKGROUND: bg1.jpg
+#+OPTIONS: reveal-title-slide:<h1>%t</h1><h2 class='my-title'>%a</h2><h3 class='my-title'>Le Nuit Du Hack</h3><h3 class='my-title'>02/07/2016</h3>
+#+OPTIONS: toc:nil
+#+OPTIONS: num:nil
+#+OPTIONS: reveal_control:t
+#+OPTIONS: reveal_progress:nil
+#+OPTIONS: reveal_history:ni1l
+#+OPTIONS: reveal_center:nil
+#+OPTIONS: reveal_rolling_links:nil
+#+OPTIONS: reveal_keyboard:t
+#+OPTIONS: reveal_rolling_links:t
+#+OPTIONS: reveal_overview:t
+#+OPTIONS: reveal_slide_number:nil
+
+
+
+* Who Am I?
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Lefteris
+#+ATTR_HTML: :width 30% :height 30%
+[[./images/lefteris.png]]
+- Passionate about Systems Programming and AI
+- Worked in Ethereum since 2014, c++ core and Solidity Language
+- Tech Lead of slock.it and DAO contributor
+
+* Outline
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- *Section I:* Introduce what the Ethereum protocol is and go through its basic components.
+- *Section II:* Introduce what The DAO is.
+- *Section III:* Explain the how the DAO hack happened and what its consequences are.
+
+* Section I - Ethereum
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ethereum
+[[./images/ethereum.png]]
+* Ethereum
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- Public blockain platform
+- Programmable transactions
+- Ethereum Virtual Machine
+- Smart Contracts and Dapps.
+#+BEGIN_NOTES
+Ethereum is a public blockchain platform with programmable transaction functionality. It provides
+a decentralized virtual machine that can execute peer-to-peer contracts using a cryptocurrency
+called Ether. 
+
+People can write programs that are deployed in the ethereum blockchain. These programs have come
+to be known as smart contracts. They function as little black boxes of code that execute their code as soon as they are activated by some external stimuli.
+
+The blockchain combined with the smart contracts is what makes Ethereum a unique blockchain platform
+for what we have come to refer to as Decentralized Applications (Dapps). Such applications could be
+Token Systems, Identity and Reputation Systems, Decentralized Autonomous Organizations etc.
+#+END_NOTES
+
+* Ethereum Blockchain
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- Nodes create transactions and send them to the network
+- Miners get the transactions, verify them and include them in their blocks.
+- All nodes sync new blocks from the network and thus build the blockchain. 
+
+#+BEGIN_NOTES
+Every user that runs an Ethereum node and has an account can create trasnactions and push them to
+the network.
+
+Miners are the people who create new blocks and add them to the blockchain. They verify
+all the transactions that exist in the network and if succesfull include them in the new
+blocks they are creating.
+
+All ethereum nodes continuously synchronize with the network, download new blocks and after verifying
+them they add them to their local copy of the blockchain. This is how the blockchain's ledger is
+continuously being built all around the world in a decentralized fashion
+
+The Ethereum blockchain is in many ways similar to the Bitcoin blockchain, although it does have some differences.
+The main difference between Ethereum and Bitcoin with regard to the blockchain architecture is that, unlike Bitcoin,
+Ethereum blocks contain a copy of both the transaction list and the most recent state. Aside from that, two other values,
+the block number and the difficulty, are also stored in the block. 
+#+END_NOTES
+
+* Accounts
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+NAME: Ethereum Accounts
+#+ATTR_HTML: :width 75% height: 75%
+[[./images/account.png]]
+
+- Generated from an ECDSA private/public key pair
+- Has a certain balance
+- Separated in:
+    - Externally Owned Accounts
+    - Contract accounts
+
+
+#+BEGIN_NOTES
+Each ethereum account address is generated from the ECDSA private key/public key pair. A pair of keys
+according to the ECDSA algorithm is created and then the ethereum address will be the rightmost
+20-bytes of the public key.
+
+An account contains 4 fields:
+1. The nonce, a counter used to make sure each transaction can only be processed once.
+2. The account's current balance
+3. The account's code. Can also be NULL.
+4. The account's storage. Is empty by default.
+#+END_NOTES
+
+* Ether
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ether
+#+ATTR_HTML: :width 35% height: 35%
+[[./images/ether.jpg]]
+
+Ether is the token that fuels the Ethereum Ecosystem.
+
+- 10^18 Wei
+- 10^6  Szabo
+- 10^3  Finney
+#+BEGIN_NOTES
+Ether is the token that fuels the Ethereum Ecosystem.
+Due to the amount of computational steps required in many of the parts of the Ethereum ecosystem
+you will often see many denominations of Ether. One ether is equal to:
+
+- 10^18 Wei
+- 10^15 Kwei
+- 10^12 Mwei
+- 10^9  Gwei
+- 10^6  Szabo
+- 10^3  Finney
+
+Right now 1 Ether is prices at roughly a bit above 10 EUR
+#+END_NOTES
+
+* Gas
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Gas
+#+ATTR_HTML: :width 45% height: 45%
+[[./images/gas.png]]
+
+#+ATTR_REVEAL: :frag (appear)
+- Every opcode in the EVM costs Gas
+- Price in ETH is determined by the /GasPrice/
+- You will end up needing more of it
+
+#+BEGIN_NOTES
+Gas is very important in the Ethereum ecosystem. It's what is used for the anti denial of service property
+of Ethereum. In order to prevent accidental or hostile infinite loops each compuatational step has an associated
+cost. The fundamental unit of computation is Gas. Most computations cost 1 Gas but as expected some computations
+cost more because they increase amount of data that must be stored as part of the state.
+#+END_NOTES
+* PoW Mining
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ether
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/mining_rig.jpg]]
+#+BEGIN_NOTES
+Mining is the implementation of the concensus system by all the nodes in the network.
+Nodes in the network continuously attempt to produce packages of transactions called "blocks".
+each block containing a timestamp, a nonce, a reference to (ie. hash of) the previous block
+and a list of all of the transactions that have taken place since the previous block.
+Over time, this creates a persistent, ever-growing, "blockchain" that constantly updates
+to represent the latest state of the ledger.
+
+Ethash is the Proof Of Work algorithm used in the Ethereum network atm. It's the algorithm
+that is used to either verify an existing block or mine a new block. It is a modified version of
+the Dagger Hashimoto Algorithm.
+
+DIFFERENCES TO BITCOIN:
+The main difference with the Bitcoin PoW algorithm is the fact that Ethash is designed to be ASIC resistant.
+An ASIC (application-specific integrated circuit) is a microchip designed for a special application, in this case crypto currency mining algorithms.
+ASICs are considered really harmful by the community and it was a high priority to have an ASIC resistant algorithm.
+
+The ASIC resistnce is This is achieved by requiring a lot of memory, which when implemented on an ASIC, translates to needing lots of physical area on the chip.
+ASIC implementations derive their power from having many physically parallel and pipelined threads on one chip, each requiring a certain
+piece of chip real estate. Now if your algorithm requires lots of real estate even for one step of the pipeline, there will not
+be much room to actually parallelize or pipeline the algorithm. Thereby you will lose the parallelizing advantage of an ASIC implementation.
+#+END_NOTES
+* Transactions
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ethereum Transaction
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/transaction.png]]
+
+Signed messages sent from externally owned accounts
+- Contain fields with details of the transaction.
+- They cost gas
+- Contracts execute code when receiving them
+
+#+BEGIN_NOTES
+A transaction in Ethereum is a signed data message that's sent from an externally owned account.
+A transaction contains:
+ - The message's recipient
+ - The message's sender identified by a Signature.
+ - The amount of ether to be transferred. This is called *endowment* for contract creation transactions.
+ - An optional data field.
+ - A *Gas* value. Represent the maximum gas to be used and to be credited to the sender's account.
+   If the sender does not have enough gas or if the amount of gas required for the transaction exceeds
+   this limit, then the transaction is rejected.
+ - A *GASPrice*. The price of Gas in ether. Basically the fee the sender pays per computational step.
+   Default is 50 Shannon.
+
+If the message's recipient is a contract then its code will be executed.
+
+The optional data field also adds to the transaction's Gas since there is a fee of 5 Gas for each byte of the Data.
+With the existence of the Gas System an attacker is required to pay roportionately for every resource that they
+consume, including computation, bandwidth and storage; hence, any transaction that leads to the network consuming a
+greater amount of any of these resources must have a gas fee roughly proportional to the increment.
+#+END_NOTES
+
+* Messages
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Ethereum Messages
+[[./images/contractmessages.png]]
+
+- Exist only in the execution environment
+- Same attributes as transactions
+- May have a limited gas stipend
+
+
+#+BEGIN_NOTES
+Contracts have the ability to send "messages" to other contracts. Messages are virtual objects that are never serialized
+and exist only in the Ethereum execution environment. A message contains:
+
+ - The sender of the message
+ - The recipient of the message
+ - The amount of ether to transfer with the message
+ - An optional data field.
+ - A *Gas* value.
+
+A message then, is like a transaction with the main difference that it is produced by a contract and not by an
+externally owned account. Whenever a contract execute's the *CALL* opcode a message is produced and executed.
+
+Also like a transaction if a message's recipient is a contract then its code will be executed. In this way
+contracts can actually interact with each other.
+
+Note than in such case the Gas allowance applies to both the contract and any other contracts it calls to.
+For example, if an external actor A sends a transaction to B with 1000 gas, and B consumes 600 gas before
+sending a message to C, and the internal execution of C consumes 300 gas before returning, then B can spend
+another 100 gas before running out of gas.
+#+END_NOTES
+* State transition
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: State transition
+[[./images/state_transition.png]]
+
+#+BEGIN_NOTES
+The Ethereum state transition function, =APPLY(S,TX)->'S= can be defined as:
+
+1. Check if the transaction is well-formed (ie. has the right number of values), the signature is valid, and
+   the nonce matches the nonce in the sender's account. If not, return an error.
+2. Calculate the transaction fee as STARTGAS * GASPRICE, and determine the sending address from the signature.
+   Subtract the fee from the sender's account balance and increment the sender's nonce. If there is not enough balance to spend, return an error.
+3. Initialize GAS = STARTGAS, and take off a certain quantity of gas per byte to pay for the bytes in the transaction.
+4. Transfer the transaction value from the sender's account to the receiving account. If the receiving account does not yet exist, create it. If the receiving account is a contract, run the contract's code either to completion or until the execution runs out of gas.
+5. If the value transfer failed because the sender did not have enough money, or the code execution ran out of gas, revert all state changes except the payment of the fees, and add the fees to the miner's account.
+6. Otherwise, refund the fees for all remaining gas to the sender, and send the fees paid for gas consumed to the miner.
+#+END_NOTES
+* Ethereum VM
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: EVM
+[[./images/evm.png]]
+#+BEGIN_NOTES
+The code in Ethereum contracts is written in a low-level, stack-based bytecode language, referred to as
+"Ethereum virtual machine code" or "EVM code".
+
+The code consists of a series of bytes, where each byte represents an operation. In general, code execution
+is an infinite loop that consists of repeatedly carrying out the operation at the current program counter
+(which begins at zero) and then incrementing the program counter by one, until the end of the code is reached
+ or an error or STOP or RETURN instruction is detected.
+
+All computations have access to three places where they can store data:
+
+- The *Stack*, a LIFO container to which values are pushed and popped.
+- *Memory* an infinitely expandable byte array
+- The long term *storage* of the contract which is a key/value store. Unlike stack and memory which reset
+  once a computation ends, storage persists for the long term.
+
+The code can also access the value, sender and data of the incoming message, as well as block header data,
+and the code can also return a byte array of data as an output.
+#+END_NOTES
+
+* EVM Languages
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- Solidity
+- Serpent
+- Mutan
+
+* Solidity
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Solidity
+[[./images/solidity.png]]
+
+#+BEGIN_NOTES
+Generally speak about solidity
+#+END_NOTES
+* Ðapps
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- Decentralized Applications
+- Consisting of:
+  - Set of smart contracts
+  - Client side code that interacts with the contracts
+  - An Ethereum client
+
+#+BEGIN_NOTES
+The available multiplicity of Ethereum development languages is important because it enables
+developers to pick the ones they like in order to more easily and efficiently write Decentralized
+Applications (ÐApps).
+
+A ÐApp is the combined set of smart contracts and client-side code that enables them. Smart
+contracts are like cryptographic “boxes” that contain a value and only unlock it if certain
+conditions are met. They typically encapsulate some logic, rules, a process, or an agreement
+between parties.
+
+A ÐApp can be viewed architecturally as being very similar to a traditional web application,
+with one difference: in a traditional web application, you have client side Javascript code
+that is run by users inside their browsers and server-side code that is run by a host or
+company; but in a ÐApp, you instead have smart logic running on the blockchain, and client side code
+running in one of the Ethereum Clients.
+#+END_NOTES
+* Ðapps
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+Prediction Markets
+
+#+NAME: Augur
+[[./images/augurlogo.png]]
+
+* Ðapps
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+Decentralized Social Networks
+
+#+NAME: Akasha
+#+ATTR_HTML: :width 40% height: 40%
+[[./images/akasha.png]]
+
+* Ðapps
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+Decentralized Autonomous Organizations
+
+#+NAME: A decentralized Autonomous Organization
+[[./images/ethdao.png]]
+
+
+* Section II - The DAO
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+NAME: The DAO Logo
+#+ATTR_HTML: :width 58% height: 58%
+[[./images/daologo.png]]
+
+
+* The DAO - Overview
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: DAO Overview
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/daooverview.png]]
+#+BEGIN_NOTES
+The DAO is a Decentralized Autonomous Organization (“DAO”) - more specifically, it is a new breed of human organization
+never before attempted. The DAO is borne from immutable, unstoppable, and irrefutable computer code, operated entirely by
+its members, and fueled using ETH which Creates DAO tokens. Several aspects of this structure make it revolutionary:
+
+Inclusion: The DAO leverages smart contracts on the Ethereum blockchain so that anyone, anywhere in the world can be
+empowered to participate. In exchange for their early help, participants receive DAO tokens which hold many benefits.
+
+Flexibility: The DAO backs Proposals which it selects for their innovative nature, to be delivered by Contractors. Some 
+of these Proposals could hold no promise of return whatsoever (in the case of a charity for example), others could involve
+the building of products or services which The DAO could then use for its own purposes.
+
+Profitability and Growth: The DAO charges for the use of its the products or services. This revenue is then sent directly
+to The DAO in the form of ETH. The DAO then has the option to accumulate this ETH to support its growth, or redistribute
+it to the DAO Token Holders as a reward.
+
+Autonomous Governance: The ETH held by The DAO will never be centrally managed. DAO Token Holders are able to vote on
+important decisions relating to the management of The DAO, including the power to redistribute its ETH amongst themselves.
+
+The DAO, represented by smart contracts on the Ethereum blockchain at address 0xbb9bc244d798123fde783fcc1c72d3bb8c189413,
+intends to back a series of Proposals to create products or services. The DAO Token Holders will then leverage these
+product or services, or charge others for using them.
+#+END_NOTES
+
+* The DAO - Development
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+Over 860 commits by 18 contributors.
+#+NAME: DAO Development
+[[./images/development.png]]
+
+* The DAO - Development
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- Development started a year ago
+- Developed by:
+    - slock.it members
+    - ethereum community members
+- Audited by Dejavu security and many members of the Ethereum community
+
+* The DAO - Tokens
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: DAO Tokens
+#+ATTR_HTML: :width 20% height: 20%
+[[./images/daotoken.png]]
+
+- Represent how much of the Ether in the DAO is owned by the holder
+- Represent amount of voting power the holder has in proposals.
+- Are fungible
+- Are tradeable
+
+#+BEGIN_NOTES
+Explain ...
+#+END_NOTES
+* The DAO - Curator
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Curators of the DAO
+#+ATTR_HTML: :width 48% height: 48%
+[[./images/curator.png]]
+#+BEGIN_NOTES
+A Curator is a failsafe mechanism that indirectly prevents malicious actors from executing 51% attack.
+Curators do not add centralization to the DAO: they are nominated by the DAO Token Holders themselves,
+and can be fired at any time, for any reason. Curators curate the whitelist, the list of Contractors
+authorized to receive ether from the DAO.
+
+Note that the above has an added advantage: it prevents someone from acquiring 51% of the tokens then passing a Proposal sending himself 100% of The DAO’s ETH. This idea originates from a blog post by Vitalik Buterin. The very possibility of a split indeed renders this attack moot: the legit minority would stay with its current Curator holding 100% of their own ETH, while the majority attacker would be left without Curator, and with only the ETH they put in themsel
+
+#+END_NOTES
+* The DAO - Proposals
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+The way for DTH to influence the actions of the DAO.
+#+NAME: DAO Proposals
+[[./images/proposal2.png]]
+#+BEGIN_NOTES
+Explain what proposals are ...
+
+#+END_NOTES
+
+* The DAO - Proposals
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+- 14 days of debate period
+- 2 ETH deposit, returned if quorum reached
+- Require majority vote
+- Require quorum ranging from 20% to 53.3% of DTH to be met
+- Specify a transaction that the DAO should perform
+
+
+
+* The DAO - Splits
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+A way for DTH to get out
+- Done via a special 7 day proposal
+- Moves ether and create tokens in a new DAO
+- Burns the old DAO tokens
+#+NAME: DAO Splits
+[[./images/split.png]]
+#+BEGIN_NOTES
+Token holders may end up wanting to change the curators or create their own mini-DAO. This is possible through a process
+called splitting. The split is a way for people to move out of the main DAO and move the ether that was backing their tokens
+into the new Child DAO.
+
+The tokens they owned in the main DAO are burned and new tokens are created in the child DAO. This is done via a special
+proposal to the DAO, called the Split Proposal. A split proposal:
+
+- Requires 7 days to mature once created
+- During this maturity period anyone who wants to join the split has to vote for it
+- After the period expires by calling the =splitDAO()= function anyone can join the new DAO
+- The new DAO goes through a 27 Days  creation phase much like the original DAO.
+#+END_NOTES
+* The DAO - Creation
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- Created on the 30th of April 2016
+- 28 days of the fueling phase of the DAO
+- Linear price increase after 14 days
+- 12.1 Million Ether raised
+#+NAME: Creation Phase
+#+ATTR_HTML: :width 58% height: 58%
+[[./images/creationphase.jpg]]
+
+* The DAO - PostCreation
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+Many companies made very interesting proposals to the DAO
+
+#+NAME: Mobotiq Proposal
+#+ATTR_HTML: :width 43% height: 43%
+[[./images/mobotiqproposal.png]]
+
+* The DAO - PostCreation
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+My company slock.it was preparing the USN Proposal
+
+#+NAME: USN Proposal
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/slockit_usn.jpg]]
+
+
+
+* The DAO - PostCreation
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+Next versions of the DAO were being prepared
+
+#+NAME: Next Versions of the DAO
+#+ATTR_HTML: :width 42% height: 42%
+[[./images/daonext.png]]
+
+
+
+
+
+
+
+* The DAO - PostCreation
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+A path forward was set for the DAO with the DAO Improvements proposals
+
+#+NAME: DAO Improvement Proposals
+#+ATTR_HTML: :width 50% height: 50%
+[[./images/dirs.jpeg]]
+
+
+
+
+
+* Section III - The Hack
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: DAO Hack
+[[./images/daohack.jpg]]
+
+
+* Smart Contract Security
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+10th of June: Solidity anti-pattern becomes known
+#+NAME: Smart Contract Security blogpost
+[[./images/contractsecuritypost.png]]
+
+#+BEGIN_NOTES
+Bla
+#+END_NOTES
+
+* Smart Contract Security
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+NAME: Exploit explanation 1
+[[./images/exploit_explanation1.png]]
+
+
+* Smart Contract Security
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+NAME: Exploit explanation 2
+[[./images/exploit_explanation2.png]]
+
+
+
+* Deployed Dapps are affected
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+11th of June: Maker DAO is brought down
+#+NAME: MakerDAO
+[[./images/makerdao.png]]
+
+#+BEGIN_NOTES
+Bla
+#+END_NOTES
+
+* The DAO affected
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+12th of June
+- Exploit discovered in =refund()=
+- Exploit discovered in ~newContract()~
+- Exploit discovered in ~executeProposal()~
+- Exploit discovered in ~withdrawRewardFor()~
+
+
+* The DAO affected
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+ATTR_HTML: :width 65% height: 65%
+#+NAME: Fix of withdrawRewardFor()
+[[./images/withdrawreward.png]]
+
+* Disaster strikes
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+17th of June 06:00 CET
+#+NAME: Attacker strikes
+#+ATTR_HTML: :width 80% height: 80%
+[[./images/attacktime.png]]
+
+* Disaster strikes
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+The vulnerability was in a combination of splitDAO() and withdrawRewardFor()
+#+NAME: Vulnerability
+[[./images/exploit1.png]]
+
+
+* Disaster strikes
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+The vulnerability was in a combination of splitDAO() and withdrawRewardFor()
+#+NAME: Vulnerability
+[[./images/exploit2.png]]
+
+
+* Rise of The Dark DAO
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- 3,641,694 ETH are stolen
+- Frozen inside the Dark DAO until the 14th of July
+- Attacker controls both accounts in that DAO
+#+NAME: Dark DAO
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/darkdao.png]]
+
+* Immediate Aftermath
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- DAO Market crash
+- DAO price fell to almost 0.005 ETH
+#+NAME: DAO Market Crash
+[[./images/daomarket.png]]
+
+* Immediate Aftermath
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+People joined random splits about to mature at the time.
+#+NAME: Panick splits
+#+ATTR_HTML: :width 68% height: 68%
+[[./images/panick_splits.png]]
+
+* Internet explodes
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- All major news outlets report on the hack
+- ETH price goes on a freefall
+#+NAME: Net explodes
+#+ATTR_HTML: :width 58% height: 58%
+[[./images/netexplodes.png]]
+
+* Whitehat Siphoning
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- DAO was a hacker picnic
+- The remaining money was not safe
+#+NAME: Whitehat Siphoning
+#+ATTR_HTML: :width 30% height: 30%
+[[./images/siphoning.png]]
+
+* Whitehat DAOs
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- 2 Whitehat DAOS were created
+- They control 7,630,621 ETH
+#+NAME: Whitehat Siphoning
+[[./images/whitehatdaos.png]]
+#+BEGIN_NOTES
+They control 7.63/12.1 M ETH so about 63% of the total ETH.
+#+END_NOTES
+* Counterattack
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- Introduced on 19th of June
+- Empowers DTH to strike back
+#+NAME: DAO Private Creation
+#+ATTR_HTML: :width 55% height: 55%
+[[./images/privatecreation.png]]
+
+* Counterattack
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+NAME: DAO Wars
+[[./images/daowars.jpg]]
+
+
+
+* Soft Fork Proposal
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- Is temporary
+- Blacklists certain types transactions
+- Adoption can only be decided by the miners
+#+NAME: Soft Fork Vote
+#+ATTR_HTML: :width 50% height: 50%
+[[./images/softfork_vote.png]]
+
+* Soft Fork Rejection
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- DDOS vulnerability was detected
+- Imposing censorship on Ethereum will not work
+- Release to undo the soft fork was immediate
+#+BEGIN_SRC c++
+for (uint32 i = 0; i < 1000000; i++) {
+   sha3('some data'); // costly computation
+}
+dao.splitDAO(...); // render the transaction invalid
+#+END_SRC
+#+ATTR_REVEAL: :frag (appear)
+#+NAME: Prof. Sirer tweet
+[[./images/gun_tweet.png]]
+
+* Hard Fork
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+- Protocol change after a specific block
+- All ETH is moved back to the DAO account
+- The DAO code is replaced by a simple refund contract
+#+NAME: Hard Fork
+#+ATTR_HTML: :width 38% height: 38%
+[[./images/hardfork.jpg]]
+
+* The Road Ahead
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+A lot of decisions ahead for the Ethereum Ecosystem
+#+NAME: Road Ahead
+#+ATTR_HTML: :width 65% height: 65%
+[[./images/fork_in_the_road.jpg]]
+
+* Lessons Learned
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+
+#+REVEAL_HTML: <br />
+#+ATTR_HTML: :class spaciousbullets
+#+ATTR_REVEAL: :frag (appear)
+- Ecosystem not mature enough yet for totally autonomous contracts
+- Kill switches should exist
+- Smart contracts should use assertion-based programming
+- New EVM languages with formal proofing may be needed
+- Security and auditing of smart contracts should be top priority
+
+* End
+:PROPERTIES:
+:reveal_background: ./bg1.jpg
+:END:
+#+REVEAL_HTML: <br />
+Thank you for your attention!
+#+REVEAL_HTML: <br />
+Follow me Twitter/Github: @lefterisjp
+#+REVEAL_HTML: <br />
+Questions?
