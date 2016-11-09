@@ -1,0 +1,3 @@
+Presentation for Emacs and Ethereum development given during [[https://ethdev.com/][Ethdevcon0]] in Berlin 25/11/2014.
+
+Created using [[https://github.com/yjwen/org-reveal][org-reveal]]

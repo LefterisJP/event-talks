@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>CPP Ethereum and Emacs</title>
+<meta name="author" content="(Eleftherios  Karapetsas)"/>
+
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/reveal.min.css"/>
+<link rel="stylesheet" href="file:///home/lefteris/w/reveal.js/css/theme/default.css" id="theme"/>
+<link rel="stylesheet" href="./style.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'file:///home/lefteris/w/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section>
+<h1>CPP Ethereum and Emacs</h1><h2 class="my-title">Eleftherios  Karapetsas</h2><h3 class="my-title"><a href="mailto:lefteris@ethdev.com">lefteris@ethdev.com</a></h3></section>
+
+
+
+<section>
+<section id="sec-1"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Goal of this presentation</h2>
+<ul class="org-ul">
+<li class="fragment roll-in">Familiarize people with how to use Emacs in order to develop for CPP-Ethereum.
+</li>
+<li class="fragment roll-in">Show ways to develop for Ethereum in Emacs.
+</li>
+<li class="fragment roll-in">Make people like Emacs more (?)
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-2"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Why Emacs?</h2>
+<ul class="org-ul">
+<li>Advantages
+</li>
+</ul>
+<ul class="org-ul">
+<li class="fragment roll-in">Our target is developers. Emacs, along with VIM is one of the most popular editors so a big part of our user-base.
+</li>
+<li class="fragment roll-in">It's extensible and fully customizable and as such suits our tool creating needs
+</li>
+</ul>
+<ul class="org-ul">
+<li>Disadvantages
+</li>
+</ul>
+<ul class="org-ul">
+<li class="fragment roll-in">Vanilla EMACS sucks. 
+</li>
+<li class="fragment roll-in">Can be a resource hog. For some people EMACS means:
+<ul class="org-ul">
+<li>Eight Megabytes And Constantly Swapping
+</li>
+<li>Emacs Makes A Computer Slow
+</li>
+</ul>
+</li>
+</ul>
+<ul class="org-ul">
+<li class="fragment roll-in">Original meaning: Editor MACroS
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-3"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Setup the environment</h2>
+<p>
+There are too many ways to setup a development environment in EMACS. I will showcase my own.
+</p>
+
+<ul class="org-ul">
+<li>Obtain el-get
+</li>
+<li>Specify the required packages
+</li>
+<li>Setup the packages
+</li>
+<li>Develop !
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-4"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>el-get</h2>
+<p>
+Installs, updates and initializes Emacs packages for you.
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(add-to-list 'load-path <span style="color: #2aa198;">"~/.emacs.d/el-get/el-get"</span>)
+
+(<span style="color: #859900;">unless</span> (<span style="color: #859900;">require</span> '<span style="color: #2aa198;">el-get</span> nil 'noerror)
+  (<span style="color: #859900;">with-current-buffer</span>
+      (url-retrieve-synchronously
+       <span style="color: #2aa198;">"https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el"</span>)
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path <span style="color: #2aa198;">"~/.emacs.d/el-get-user/recipes"</span>)
+(el-get 'sync)
+</pre>
+</div>
+</section>
+<section id="sec-4-1"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Obtaining new packages</h3>
+<ul class="org-ul">
+<li>Downloading a new package
+<div class="org-src-container">
+
+<pre  class="src src-sh">M-x el-get-install RET name-of-package
+</pre>
+</div>
+</li>
+
+<li>Updating an already installed package
+<div class="org-src-container">
+
+<pre  class="src src-sh">M-x el-get-update RET name-of-package
+</pre>
+</div>
+</li>
+
+<li>Deleting an installed package
+<div class="org-src-container">
+
+<pre  class="src src-sh">M-x el-get-remove RET name-of-package
+</pre>
+</div>
+</li>
+
+<li>Update all installed packages
+<div class="org-src-container">
+
+<pre  class="src src-sh">M-x el-get-update-all
+</pre>
+</div>
+</li>
+</ul>
+</section>
+<section id="sec-4-2"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Specifying your packages</h3>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">my-packages</span>
+'(s
+  ag
+  fill-column-indicator
+  expand-region))
+
+(el-get 'sync my-packages)
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="sec-5"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Packages for C++ development</h2>
+<ul class="org-ul">
+<li>Must have
+<ul class="org-ul">
+<li>malinka
+</li>
+<li>rtags
+</li>
+<li>auto-complete
+</li>
+<li>flycheck
+</li>
+<li>projectile
+</li>
+</ul>
+</li>
+<li>Optional
+<ul class="org-ul">
+<li>magit
+</li>
+<li>helm
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="sec-5-1" >
+
+<h3>Actually getting the packages</h3>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">my-packages</span>
+'(malinka
+  rtags
+  auto-complete
+  flycheck
+  projectile
+  magit
+  helm))
+
+(el-get 'sync my-packages)
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="sec-6"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Malinka</h2>
+<p>
+A meta-package allowing users to configure C++ projects and feed their data to other packages.
+</p>
+<div class="org-src-container">
+
+<pre  class="src src-emacs-lisp">(malinka-define-project
+ <span style="color: #859900;">:name</span> <span style="color: #2aa198;">"ethereum"</span>
+ <span style="color: #859900;">:same-name-check</span> nil
+ <span style="color: #859900;">:build-cmd</span> <span style="color: #2aa198;">"make clean &amp;&amp; make -j5 VERBOSE=1"</span>
+ <span style="color: #859900;">:build-root-directory</span> <span style="color: #2aa198;">"/home/lefteris/ew/cpp-ethereum/build"</span>
+ <span style="color: #859900;">:root-directory</span> <span style="color: #2aa198;">"/home/lefteris/ew/cpp-ethereum"</span>
+ <span style="color: #859900;">:compile-cmd</span> <span style="color: #2aa198;">"make -C .. -j4"</span>
+ <span style="color: #859900;">:test-cmd</span> <span style="color: #2aa198;">"./build/test/testeth"</span>)
+</pre>
+</div>
+
+<div class="source-reference">
+<p>
+Source: <a href="https://github.com/LefterisJP/malinka">https://github.com/LefterisJP/malinka</a>
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="sec-7"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Rtags</h2>
+<p>
+Client server application that indexes C/C++ code and keeps a peristent in-memory Database of all references. Uses Clang.
+Provides:
+</p>
+<ul class="org-ul">
+<li>Jumping between tags and definitions/implementations especially in C++.
+</li>
+<li>Reference finding
+</li>
+<li>Auto completion (feeding data to the auto complete package)
+</li>
+<li>Clang fix-it hints
+</li>
+</ul>
+
+<div class="source-reference">
+<p>
+Source: <a href="https://github.com/Andersbakken/rtags">https://github.com/Andersbakken/rtags</a>
+</p>
+</div>
+</section>
+<section id="sec-7-1"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Reference finding</h3>
+<img src="./rtags_ref_find1.png" alt="rtags_ref_find1.png" align="left" />
+<img src="./rtags_ref_find2.png" alt="rtags_ref_find2.png" align="right" />
+</section>
+<section id="sec-7-2"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Auto completion</h3>
+<p>
+Simple example for BOOST's asio basic resolver.
+</p>
+<img src="./autocomplete1.png" alt="autocomplete1.png" align="left" width="50%" height="60%" />
+<img src="./autocomplete2.png" alt="autocomplete2.png" align="right" width="50%" height="80%" />
+</section>
+<section id="sec-7-3"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Clang Fixits</h3>
+<img src="./fixit1.png" alt="fixit1.png" />
+</section>
+<section id="sec-7-4"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h3>Clang Fixits</h3>
+<img src="./fixit2.png" alt="fixit2.png" />
+</section>
+</section>
+<section>
+<section id="sec-8"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Flycheck</h2>
+<p>
+A way to interface to various syntax checkers. For C++ clang syntax checker is recommended.
+<img src="./flycheck.png" alt="flycheck.png" />
+</p>
+
+
+<div class="source-reference">
+<p>
+Source: <a href="https://github.com/flycheck/flycheck">https://github.com/flycheck/flycheck</a>
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="sec-9"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Projectile</h2>
+<p>
+A project management package. Uses version control to easily index all project files.
+</p>
+<img src="./projectile1.png" alt="projectile1.png" align="right" />
+<ul class="org-ul">
+<li>Switch between headers/sources
+</li>
+</ul>
+<ul class="org-ul">
+<li class="fragment roll-in">Compile a project
+</li>
+<li class="fragment roll-in">Test a project
+</li>
+<li class="fragment roll-in">Grep in a project
+</li>
+<li class="fragment roll-in">Much more &#x2026;
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-10"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Developing Contracts in EMACS</h2>
+<ul class="org-ul">
+<li>What about ethereum?
+</li>
+<li>How can we develop contracts from inside an EMACS environment?
+</li>
+<li>There already is a Serpent emacs mode
+<ul class="org-ul">
+<li>Source: <a href="https://github.com/robmyers/serpent-mode">https://github.com/robmyers/serpent-mode</a>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-11"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Developing Contracts in Emacs</h2>
+<p>
+Use EMACS solidity mode!
+</p>
+<img src="./soliditymode1.png" alt="soliditymode1.png" width="45% height: 45%" />
+</section>
+</section>
+<section>
+<section id="sec-12"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Solidity mode code</h2>
+<div class="org-src-container">
+
+<pre  class="src src-solidity"> contract Ballot {
+    // Create a new ballot with $(_numProposals) different proposals.
+    function Ballot(uint8 _numProposals) {
+        address sender = 0x123; // msg.sender
+        chairperson = sender;
+        numProposals = _numProposals;
+    }
+
+    // Give $(voter) the right to vote on this ballot.
+    // May only be called by $(chairperson).
+    function giveRightToVote(address voter) {
+        if (/*msg.sender != chairperson ||*/ voted[voter]) return;
+        voterWeight[voter] = 1;
+    }
+
+    // Delegate your vote to the voter $(to).
+    function delegate(address to) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender]) return;
+        while (delegations[to] != address(0) &amp;&amp; delegations[to] != sender)
+            to = delegations[to];
+        if (to == sender) return;
+        voted[sender] = true;
+        delegations[sender] = to;
+        if (voted[to]) voteCounts[votes[to]] += voterWeight[sender];
+        else voterWeight[to] += voterWeight[sender];
+    }
+
+    // Give a single vote to proposal $(proposal).
+    function vote(uint8 proposal) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender] || proposal &gt;= numProposals) return;
+        voted[sender] = true;
+        votes[sender] = proposal;
+        voteCounts[proposal] += voterWeight[sender];
+    }
+
+    function winningProposal() const returns (uint8 winningProposal) {
+        uint256 winningVoteCount = 0;
+        uint8 proposal = 0;
+        while (proposal &lt; numProposals) {
+            if (voteCounts[proposal] &gt; winningVoteCount) {
+                winningVoteCount = voteCounts[proposal];
+                winningProposal = proposal;
+            }
+            ++proposal;
+        }
+    }
+
+    address chairperson;
+    uint8 numProposals;
+    mapping(address =&gt; uint256) voterWeight;
+    mapping(address =&gt; bool) voted;
+    mapping(address =&gt; uint8) votes;
+    mapping(address =&gt; address) delegations;
+    mapping(uint8 =&gt; uint256) voteCounts;
+}
+</pre>
+</div>
+</section>
+</section>
+<section>
+<section id="sec-13"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Current features</h2>
+<div class="opening_paragraph">
+<p>
+&#x2026; are very minimal
+</p>
+</div>
+
+<ul class="org-ul">
+<li>Syntax highlighting
+</li>
+<li>Identation
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-14"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Future work</h2>
+<ul class="org-ul">
+<li class="fragment roll-in">Auto completion
+<ul class="org-ul">
+<li>Achievable as soon as solc prints out the AST of a contract in json.
+</li>
+</ul>
+</li>
+<li class="fragment roll-in">Integration with the debugger (?)
+</li>
+<li class="fragment roll-in">Integration with other tools
+</li>
+</ul>
+</section>
+</section>
+<section>
+<section id="sec-15"  data-background="/home/lefteris/ew/devcon1_presentation/bg1.jpg">
+
+<h2>Thank you</h2>
+<ul class="org-ul">
+<li>Any questions?
+</li>
+<li>Any other cool tips by EMACS users?
+</li>
+</ul>
+<div class="closing_paragraph">
+<ul class="org-ul">
+<li>Get the slides from: <a href="https://github.com/LefterisJP/ethdevcon0_emacs.git">https://github.com/LefterisJP/ethdevcon0_emacs.git</a>
+</li>
+<li>Follow @LefterisJP for more updates.
+</li>
+</ul>
+</div>
+</section>
+</section>
+</div>
+</div>
+
+<script src="file:///home/lefteris/w/reveal.js/lib/js/head.min.js"></script>
+<script src="file:///home/lefteris/w/reveal.js/js/reveal.min.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: false,
+history: true,
+center: false,
+slideNumber: true,
+rollingLinks: true,
+keyboard: true,
+overview: true,
+margin: 0.00,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'file:///home/lefteris/w/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'file:///home/lefteris/w/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+]
+});
+</script>
+</body>
+</html>

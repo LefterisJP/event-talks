@@ -1,0 +1,325 @@
+#+Title: CPP Ethereum and Emacs
+#+Author: Eleftherios  Karapetsas
+#+Email: lefteris@ethdev.com
+#+REVEAL_MARGIN: 0.0001
+#+REVEAL_EXTRA_CSS: ./style.css
+#+REVEAL_HLEVEL: 1
+#+REVEAL_TITLE_SLIDE_TEMPLATE: <h1>%t</h1><h2 class="my-title">%a</h2><h3 class="my-title">%e</h3>
+#+OPTIONS: toc:nil
+#+OPTIONS: reveal_control:t
+#+OPTIONS: reveal_progress:nil
+#+OPTIONS: reveal_history:ni1l
+#+OPTIONS: reveal_center:nil
+#+OPTIONS: reveal_rolling_links:nil
+#+OPTIONS: reveal_keyboard:t
+#+OPTIONS: reveal_rolling_links:t
+#+OPTIONS: reveal_overview:t
+
+
+
+* Goal of this presentation
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+ATTR_REVEAL: :frag roll-in
+- Familiarize people with how to use Emacs in order to develop for CPP-Ethereum.
+- Show ways to develop for Ethereum in Emacs.
+- Make people like Emacs more (?)
+* Why Emacs?
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Advantages
+#+ATTR_REVEAL: :frag roll-in
+    - Our target is developers. Emacs, along with VIM is one of the most popular editors so a big part of our user-base.
+    - It's extensible and fully customizable and as such suits our tool creating needs
+- Disadvantages
+#+ATTR_REVEAL: :frag roll-in
+    - Vanilla EMACS sucks. 
+    - Can be a resource hog. For some people EMACS means:
+      - Eight Megabytes And Constantly Swapping
+      - Emacs Makes A Computer Slow
+#+ATTR_REVEAL: :frag roll-in
+      - Original meaning: Editor MACroS
+* Setup the environment
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+There are too many ways to setup a development environment in EMACS. I will showcase my own.
+
+- Obtain el-get
+- Specify the required packages
+- Setup the packages
+- Develop !
+* el-get
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Installs, updates and initializes Emacs packages for you.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+** Obtaining new packages
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Downloading a new package
+ #+BEGIN_SRC sh
+ M-x el-get-install RET name-of-package
+ #+END_SRC
+
+- Updating an already installed package
+ #+BEGIN_SRC sh
+ M-x el-get-update RET name-of-package
+ #+END_SRC
+
+- Deleting an installed package
+ #+BEGIN_SRC sh
+ M-x el-get-remove RET name-of-package
+ #+END_SRC
+
+- Update all installed packages
+ #+BEGIN_SRC sh
+ M-x el-get-update-all
+ #+END_SRC
+** Specifying your packages
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+BEGIN_SRC emacs-lisp
+(defvar my-packages
+'(s
+  ag
+  fill-column-indicator
+  expand-region))
+
+(el-get 'sync my-packages)
+#+END_SRC
+* Packages for C++ development
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Must have
+    - malinka
+    - rtags
+    - auto-complete
+    - flycheck
+    - projectile
+- Optional
+    - magit
+    - helm
+** Actually getting the packages
+#+BEGIN_SRC emacs-lisp
+(defvar my-packages
+'(malinka
+  rtags
+  auto-complete
+  flycheck
+  projectile
+  magit
+  helm))
+
+(el-get 'sync my-packages)
+#+END_SRC
+* Malinka
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A meta-package allowing users to configure C++ projects and feed their data to other packages.
+#+BEGIN_SRC emacs-lisp
+(malinka-define-project
+ :name "ethereum"
+ :same-name-check nil
+ :build-cmd "make clean && make -j5 VERBOSE=1"
+ :build-root-directory "/home/lefteris/ew/cpp-ethereum/build"
+ :root-directory "/home/lefteris/ew/cpp-ethereum"
+ :compile-cmd "make -C .. -j4"
+ :test-cmd "./build/test/testeth")
+#+END_SRC
+
+#+REVEAL_HTML: <div class="source-reference">
+Source: https://github.com/LefterisJP/malinka
+#+REVEAL_HTML: </div>
+* Rtags
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Client server application that indexes C/C++ code and keeps a peristent in-memory Database of all references. Uses Clang.
+Provides:
+- Jumping between tags and definitions/implementations especially in C++.
+- Reference finding
+- Auto completion (feeding data to the auto complete package)
+- Clang fix-it hints
+
+#+REVEAL_HTML: <div class="source-reference">
+Source: https://github.com/Andersbakken/rtags
+#+REVEAL_HTML: </div>
+** Reference finding
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+ATTR_HTML: :align left 
+[[./rtags_ref_find1.png]]
+#+ATTR_HTML: :align right 
+[[./rtags_ref_find2.png]]
+** Auto completion
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Simple example for BOOST's asio basic resolver.
+#+ATTR_HTML: :align left :width 50% :height 60%
+[[./autocomplete1.png]]
+#+ATTR_HTML: :align right :width 50% :height 80%
+[[./autocomplete2.png]]
+** Clang Fixits
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+[[./fixit1.png]]
+** Clang Fixits
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+[[./fixit2.png]]
+* Flycheck
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A way to interface to various syntax checkers. For C++ clang syntax checker is recommended.
+[[./flycheck.png]]
+
+
+#+REVEAL_HTML: <div class="source-reference">
+Source: https://github.com/flycheck/flycheck
+#+REVEAL_HTML: </div>
+* Projectile
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A project management package. Uses version control to easily index all project files.
+#+ATTR_HTML: :align right
+[[./projectile1.png]]
+- Switch between headers/sources
+#+ATTR_REVEAL: :frag roll-in
+- Compile a project
+- Test a project
+- Grep in a project
+- Much more ...
+* Developing Contracts in EMACS
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+
+- What about ethereum?
+- How can we develop contracts from inside an EMACS environment?
+- There already is a Serpent emacs mode
+    - Source: https://github.com/robmyers/serpent-mode
+* Developing Contracts in Emacs
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Use EMACS solidity mode!
+#+ATTR_HTML: :width 45% height: 45%
+[[./soliditymode1.png]]
+* Solidity mode code
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+BEGIN_SRC solidity
+ contract Ballot {
+    // Create a new ballot with $(_numProposals) different proposals.
+    function Ballot(uint8 _numProposals) {
+        address sender = 0x123; // msg.sender
+        chairperson = sender;
+        numProposals = _numProposals;
+    }
+
+    // Give $(voter) the right to vote on this ballot.
+    // May only be called by $(chairperson).
+    function giveRightToVote(address voter) {
+        if (/*msg.sender != chairperson ||*/ voted[voter]) return;
+        voterWeight[voter] = 1;
+    }
+
+    // Delegate your vote to the voter $(to).
+    function delegate(address to) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender]) return;
+        while (delegations[to] != address(0) && delegations[to] != sender)
+            to = delegations[to];
+        if (to == sender) return;
+        voted[sender] = true;
+        delegations[sender] = to;
+        if (voted[to]) voteCounts[votes[to]] += voterWeight[sender];
+        else voterWeight[to] += voterWeight[sender];
+    }
+
+    // Give a single vote to proposal $(proposal).
+    function vote(uint8 proposal) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender] || proposal >= numProposals) return;
+        voted[sender] = true;
+        votes[sender] = proposal;
+        voteCounts[proposal] += voterWeight[sender];
+    }
+
+    function winningProposal() const returns (uint8 winningProposal) {
+        uint256 winningVoteCount = 0;
+        uint8 proposal = 0;
+        while (proposal < numProposals) {
+            if (voteCounts[proposal] > winningVoteCount) {
+                winningVoteCount = voteCounts[proposal];
+                winningProposal = proposal;
+            }
+            ++proposal;
+        }
+    }
+
+    address chairperson;
+    uint8 numProposals;
+    mapping(address => uint256) voterWeight;
+    mapping(address => bool) voted;
+    mapping(address => uint8) votes;
+    mapping(address => address) delegations;
+    mapping(uint8 => uint256) voteCounts;
+}
+#+END_SRC
+* Current features
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+REVEAL_HTML: <div class="opening_paragraph">
+... are very minimal
+#+REVEAL_HTML: </div>
+
+- Syntax highlighting
+- Identation
+* Future work
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+ATTR_REVEAL: :frag roll-in
+- Auto completion
+  - Achievable as soon as solc prints out the AST of a contract in json.
+- Integration with the debugger (?)
+- Integration with other tools
+* Thank you
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Any questions?
+- Any other cool tips by EMACS users?
+#+REVEAL_HTML: <div class="closing_paragraph">
+- Get the slides from: https://github.com/LefterisJP/ethdevcon0_emacs.git
+- Follow @LefterisJP for more updates.
+#+REVEAL_HTML: </div>
